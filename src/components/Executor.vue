@@ -356,7 +356,7 @@ export default {
       return this.$helpers.getURL('state', {substates: 'EXECUTOR', verbose: true})
     },
     stopProposalExecutionURL () {
-      return this.$helpers.getURL('stop_proposal_execution')
+      return this.$helpers.getURL('stop_proposal_execution', {force_stop: true})
     },
     getPendingPartitionMovements () {
       if (typeof this.ExecutorState.pendingPartitionMovement === 'undefined') {
