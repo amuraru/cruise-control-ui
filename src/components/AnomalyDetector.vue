@@ -108,6 +108,43 @@
         </table>
       </div>
 
+      <div v-if='AnomalyDetectorState.recentIntraBrokerGoalViolations && AnomalyDetectorState.recentIntraBrokerGoalViolations.length > 0'>
+        <h4>Recent Goal Violations</h4>
+        <table class="table table-sm table-bordered">
+          <thead>
+            <tr>
+              <th>DetectionTime</th>
+              <th>Violated Goals</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="r in AnomalyDetectorState.recentIntraBrokerGoalViolations">
+              <td>{{ r.detectionMs | formatLocalTime }} ago</td>
+              <td>
+                <!-- Depedning on the version of CC we use, two types of responses are being sent out -->
+                <template v-if='r.hasOwnProperty("violatedGoals")'>
+                  <ul class="list-group">
+                    <li class="list-group-item list-group-item-danger" v-for="g in r.violatedGoals">{{ g }}</li>
+                  </ul>
+                </template>
+                <template v-else>
+                  <h5>Fixable</h5>
+                  <ul class="list-group" v-if='r.fixableViolatedGoals.length > 0'>
+                    <li class="list-group-item list-group-item-success" v-for="g in r.fixableViolatedGoals">{{ g }}</li>
+                  </ul>
+                  <div class="alert alert-info" v-else>None</div>
+                  <h5>UnFixable</h5>
+                  <ul class="list-group" v-if='r.unfixableViolatedGoals.length > 0'>
+                    <li class="list-group-item list-group-item-danger" v-for="g in r.unfixableViolatedGoals">{{ g }}</li>
+                  </ul>
+                  <div class="alert alert-info" v-else>None</div>
+                </template>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <div v-if='AnomalyDetectorState.recentMetricAnomalies && AnomalyDetectorState.recentMetricAnomalies.length > 0'>
         <h4>Recent Metric Anomalies</h4>
         <table class="table table-sm table-bordered" >
