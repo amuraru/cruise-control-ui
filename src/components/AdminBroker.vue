@@ -87,6 +87,10 @@
           <input class="form-check-input" type="radio" value="demote" v-model='actionName' :disabled='selectedBrokers.length == 0'>
           <label class="form-check-label">Demote Brokers</label>
         </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" value="remove_disks" v-model='actionName' :disabled='selectedBrokers.length != 0'>
+          <label class="form-check-label">Remove Disks</label>
+        </div>
         <div class="form-check form-check-inline float-right" v-if='actionName'>
           <input class="form-check-input" type="checkbox" v-model='showURL'>
           <label class="form-check-label">Show URL</label>
@@ -531,6 +535,29 @@
         </form>
       </div>
 
+      <!-- Demote disk -->
+      <div class="alert alert-primary" v-if='actionName === "remove_disks"'>
+        <h5>Remove Disk Flags</h5>
+        <hr>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-inline">
+              <label class="form-label"> Disks as broker_id-disk_name separated by comma: </label>
+              <input type="text" class="form-input" v-model='brokerid_and_logdirs' placeholder=''>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" v-model='dryrun'>
+              <label class="form-check-label">DryRun</label>
+            </div>
+          </div>
+        </div>
+        <div class="text-right">
+          <button @click='actionBroker' class="btn btn-primary">Remove Disks</button>
+        </div>
+      </div>
+
       <!--
         <pre><code v-if='actionURL'>{{ actionURL.replace(/\&/g, "\n\t") }}</code></pre>
         -->
@@ -615,7 +642,8 @@ export default {
       posted: false, // true if a POST method is made
       posturl: null, // POST url
       postResponse: '', // POST response from server
-      detectedUserTaskId: false // true in case the response has user-task-id
+      detectedUserTaskId: false, // true in case the response has user-task-id
+      brokerid_and_logdirs: null // list of broker_id and logdirs
     }
   },
   created () {
@@ -678,6 +706,19 @@ export default {
           // params.excluded_topics = xssFilters.uriQueryInDoubleQuotedAttr(vm.excluded_topics)
           params.excluded_topics = vm.excluded_topics
         }
+      }
+      if (vm.actionName === 'remove_disks') {
+        // POST /kafkacruisecontrol/remove_disks
+        //  ?brokerid_and_logdirs=[id1-logdir1,id2-logdir2...]
+        //  &skip_hard_goal_check=[true/false]
+        //  &dryrun=[true/false]
+        if (vm.brokerid_and_logdirs) {
+          params.brokerid_and_logdirs = vm.brokerid_and_logdirs.replace(', ', '')
+        }
+        if (vm.skip_hard_goal_check) {
+          params.skip_hard_goal_check = vm.skip_hard_goal_check
+        }
+        return vm.$helpers.getURL('remove_disks', params)
       }
       if (vm.actionName === 'remove') {
         // POST /kafkacruisecontrol/remove_broker
