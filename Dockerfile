@@ -1,4 +1,4 @@
-FROM node:10 as base
+FROM node:20 as base
 
 WORKDIR /opt/cruise-control-ui
 COPY package*.json ./
