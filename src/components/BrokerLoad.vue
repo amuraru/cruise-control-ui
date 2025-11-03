@@ -37,16 +37,16 @@
         <tr v-for="e in sortedBrokers">
           <td>{{ e.Broker }}</td>
           <td><broker-state :state='e.BrokerState'></broker-state></td>
-          <td>{{ e.Host | formatHost }}</td>
+          <td>{{ $formatHost(e.Host) }}</td>
           <td :class='e.Replicas < 1 ? "table-info" : null'>{{ e.Replicas }}</td>
           <td :class='e.Leaders < 1 ? "table-warning" : null'>{{ e.Leaders }}</td>
-          <td>{{ e.DiskMB | formatUnits }}</td>
+          <td>{{ $formatUnits(e.DiskMB) }}</td>
           <td>{{ e.CpuPct.toFixed(2) }} %</td>
-          <td>{{ e.LeaderNwInRate | formatNetworkUnits }}</td>
-          <td>{{ e.FollowerNwInRate | formatNetworkUnits }}</td>
-          <td v-if='apiMinorVersion === 2'>{{ e.NwOutRate | formatNetworkUnits }}</td>
-          <td v-if='apiMinorVersion === 1'>{{ e.NnwOutRate | formatNetworkUnits }}</td>
-          <td>{{ e.PnwOutRate | formatNetworkUnits }}</td>
+          <td>{{ $formatNetworkUnits(e.LeaderNwInRate) }}</td>
+          <td>{{ $formatNetworkUnits(e.FollowerNwInRate) }}</td>
+          <td v-if='apiMinorVersion === 2'>{{ $formatNetworkUnits(e.NwOutRate) }}</td>
+          <td v-if='apiMinorVersion === 1'>{{ $formatNetworkUnits(e.NnwOutRate) }}</td>
+          <td>{{ $formatNetworkUnits(e.PnwOutRate) }}</td>
           <td>{{ e.LeaderNwInRate > 0 ? Number(e.FollowerNwInRate / e.LeaderNwInRate).toFixed(4) : null }}</td>
           <td v-if='apiMinorVersion === 2'>{{ e.NwOutRate > 0 ? Number(e.LeaderNwInRate / e.NwOutRate).toFixed(4) : null }}</td>
           <td v-if='apiMinorVersion === 1'>{{ e.NnwOutRate > 0 ? Number(e.LeaderNwInRate / e.NnwOutRate).toFixed(4) : null }}</td>
@@ -58,8 +58,8 @@
 </template>
 
 <script>
-import BrokerState from '@/components/BrokerState'
-const sortBy = require('lodash.sortby')
+import BrokerState from '@/components/BrokerState.vue'
+import sortBy from 'lodash.sortby'
 
 export default {
   name: 'BrokerLoad',

@@ -95,11 +95,18 @@ export default {
           vm.errorData = null
           vm.loading = false
           vm.loaded = true
-          vm.KafkaPartitionState.offline = r.data.KafkaPartitionState.offline
-          vm.KafkaPartitionState.urp = r.data.KafkaPartitionState.urp
-          vm.KafkaBrokerState.ReplicaCountByBrokerId = r.data.KafkaBrokerState.ReplicaCountByBrokerId
-          vm.KafkaBrokerState.OutOfSyncCountByBrokerId = r.data.KafkaBrokerState.OutOfSyncCountByBrokerId
-          vm.KafkaBrokerState.LeaderCountByBrokerId = r.data.KafkaBrokerState.LeaderCountByBrokerId
+
+          // Check if response data exists
+          if (!r.data || !r.data.KafkaPartitionState || !r.data.KafkaBrokerState) {
+            console.warn('Invalid API response structure:', r.data)
+            return
+          }
+
+          vm.KafkaPartitionState.offline = r.data.KafkaPartitionState.offline || 0
+          vm.KafkaPartitionState.urp = r.data.KafkaPartitionState.urp || 0
+          vm.KafkaBrokerState.ReplicaCountByBrokerId = r.data.KafkaBrokerState.ReplicaCountByBrokerId || {}
+          vm.KafkaBrokerState.OutOfSyncCountByBrokerId = r.data.KafkaBrokerState.OutOfSyncCountByBrokerId || {}
+          vm.KafkaBrokerState.LeaderCountByBrokerId = r.data.KafkaBrokerState.LeaderCountByBrokerId || {}
           // only >= kafka 2.0 release
           try {
             vm.KafkaPartitionState['with-offline-replicas'] = r.data.KafkaPartitionState['with-offline-replicas']

@@ -33,13 +33,13 @@
     <tbody>
       <tr v-for='(v, k) in goal.clusterModelStats.statistics'>
         <th>{{ k }}</th>
-        <td>{{ v.disk | formatUnits }}</td>
+        <td>{{ $formatUnits(v.disk) }}</td>
         <td>{{ v.replicas.toFixed(0) }}</td>
         <td>{{ v.cpu.toFixed(0) }}</td>
-        <td>{{ v.networkOutbound | formatNetworkUnits }}</td>
-        <td>{{ v.networkInbound | formatNetworkUnits }}</td>
+        <td>{{ $formatNetworkUnits(v.networkOutbound) }}</td>
+        <td>{{ $formatNetworkUnits(v.networkInbound) }}</td>
         <td>{{ v.topicReplicas.toFixed(0) }}</td>
-        <td>{{ v.potentialNwOut | formatNetworkUnits }}</td>
+        <td>{{ $formatNetworkUnits(v.potentialNwOut) }}</td>
       </tr>
     </tbody>
   </table>

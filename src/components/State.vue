@@ -17,7 +17,9 @@
       <div class="tab-content">
         <div class="card">
           <div class="card-body">
-            <router-view></router-view>
+            <router-view v-slot="{ Component }">
+              <component :is="Component" />
+            </router-view>
           </div>
         </div>
       </div>
@@ -27,10 +29,10 @@
 
 
 <script>
-import Monitor from '@/components/Monitor'
-import Analyzer from '@/components/Analyzer'
-import Executor from '@/components/Executor'
-import AnomalyDetector from '@/components/AnomalyDetector'
+import Monitor from '@/components/Monitor.vue'
+import Analyzer from '@/components/Analyzer.vue'
+import Executor from '@/components/Executor.vue'
+import AnomalyDetector from '@/components/AnomalyDetector.vue'
 
 export default {
   name: 'State',

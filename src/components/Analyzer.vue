@@ -19,7 +19,7 @@
       <p>Loading ...</p>
     </div>
     <div v-else>
-      <div class class="card-deck mb-3">
+      <div class="card-deck mb-3">
         <div class='card text-center'>
           <div class='card-header'>Analyzer</div>
           <div class='card-body'>
@@ -58,7 +58,8 @@
 </template>
 
 <script>
-import BooleanEL from '@/components/BooleanEL'
+import BooleanEL from '@/components/BooleanEL.vue'
+import { useAppStore } from '@/store'
 
 export default {
   name: 'Analyzer',
@@ -68,6 +69,10 @@ export default {
   },
   components: {
     'boolean-el': BooleanEL
+  },
+  setup() {
+    const store = useAppStore()
+    return { store }
   },
   data () {
     return {
@@ -97,7 +102,7 @@ export default {
   },
   computed: {
     hideHelperURL () {
-      return this.$store.state.hideHelperURL
+      return this.store.hideHelperURL
     },
     url () {
       return this.$helpers.getURL('state', {substates: 'ANALYZER', verbose: true})
@@ -105,8 +110,8 @@ export default {
   },
   methods: {
     argsChanged () {
-      const newurl = this.$store.getters.getnewurl(this.group, this.cluster)
-      this.$store.commit('seturl', newurl)
+      const newurl = this.store.getnewurl(this.group, this.cluster)
+      this.store.seturl(newurl)
       this.loaded = false
       this.getState()
     },

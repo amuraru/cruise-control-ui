@@ -6,17 +6,23 @@
 </template>
 
 <script>
+import { useAppStore } from '@/store'
+
 export default {
   name: 'Offline',
+  setup() {
+    const store = useAppStore()
+    return { store }
+  },
   methods: {
     setOnline () {
-      this.$store.commit('setonline', true)
+      this.store.setonline(true)
     },
     setOffline () {
-      this.$store.commit('setonline', false)
+      this.store.setonline(false)
     },
     isOnline () {
-      return this.$store.state.online
+      return this.store.online
     }
   },
   created () {

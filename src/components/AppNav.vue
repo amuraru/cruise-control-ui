@@ -4,7 +4,7 @@
     <a href="#" target="_self" class="navbar-brand">
         <img height=48 :src="cclogo" alt="LinkedIn Kafka Cruise Control Frontend" />
     </a>
-    <router-link class="navbar-item" :to='{name: "summary"}'>Summary</router-link>
+    <router-link class="navbar-item" :to='{name: "page.summary", params: {}}'>Summary</router-link>
     <ul class="navbar-nav">
       <li class="nav-item dropdown" v-for="(groupm, forgroup) in groups" :key="forgroup">
         <a class="nav-link dropdown-toggle" data-toggle='dropdown'>{{ forgroup }}</a>
@@ -17,9 +17,9 @@
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle='dropdown'>UI Administration</a>
         <div class="dropdown-menu">
-          <router-link :to='{"name": "preferences"}' class="dropdown-item" target="_self">&#9881;  Preferences</router-link>
+          <router-link :to='{"name": "page.preferences", "params": {}}' class="dropdown-item" target="_self">&#9881;  Preferences</router-link>
           <a class='dropdown-item' href='#' @click.prevent='refresh()'>⟳ Refresh Config</a>
-          <router-link :to='{"name": "configInsights"}' class="dropdown-item" target="_self">config.csv Insights</router-link>
+          <router-link :to='{"name": "page.config_insights", "params": {}}' class="dropdown-item" target="_self">config.csv Insights</router-link>
         </div>
       </li>
     </ul>
@@ -29,12 +29,17 @@
 <script>
 import xssFilters from 'xss-filters'
 import cclogo from '../assets/images/cc-logo.png'
+import { useAppStore } from '@/store'
 
 export default {
   name: 'AppNav',
   props: {
     group: String,
     cluster: String
+  },
+  setup() {
+    const store = useAppStore()
+    return { store }
   },
   data () {
     return {
@@ -52,7 +57,7 @@ export default {
     configFetch () {
       let vm = this
       let notselected = true
-      let url = vm.$store.state.configurl + '?_t=' + (new Date() / 1)
+      let url = vm.store.configurl + '?_t=' + (new Date() / 1)
       // download the cluster information csv file
       vm.$http.get(url, {withCredentials: true}).then((r) => {
         let lines = r.data.split(/\n/)
@@ -76,24 +81,24 @@ export default {
             groups[group].push({label: label, url: url})
             // set the initial selected things
             if (notselected) {
-              vm.$set(vm.active, 'group', group)
-              vm.$set(vm.active, 'cluster', label)
-              vm.$set(vm.active, 'url', url)
+              vm.active.group = group
+              vm.active.cluster = label
+              vm.active.url = url
             }
           }
         }
         vm.groups = groups
-        vm.$store.commit('config', config)
+        vm.store.setConfig(config)
         if (Object.keys(groups).length === 0) {
-          vm.$store.commit('configError', true)
-          vm.$store.commit('configErrorMessage', 'No Cruise-Control REST End point information found found in the : ' + vm.$store.state.configurl)
+          vm.store.setConfigError(true)
+          vm.store.setConfigErrorMessage('No Cruise-Control REST End point information found found in the : ' + vm.store.configurl)
         } else {
-          vm.$store.commit('configError', false)
-          vm.$store.commit('configErrorMessage', null)
+          vm.store.setConfigError(false)
+          vm.store.setConfigErrorMessage(null)
         }
       }, (e) => {
-        vm.$store.commit('configError', true)
-        vm.$store.commit('configErrorMessage', 'Error encountered while fetching :' + vm.$store.state.configurl)
+        vm.store.setConfigError(true)
+        vm.store.setConfigErrorMessage('Error encountered while fetching :' + vm.store.configurl)
       }).then(() => {
         console.log('completed')
       })
@@ -104,11 +109,11 @@ export default {
     reloadForever () {
       let vm = this
       vm.csvTimer = window.setInterval(function () {
-        // console.log('calling ...', vm.$store.state.configFileReloadInterval)
-        if (vm.$store.state.enableConfigFileReload) {
+        // console.log('calling ...', vm.store.configFileReloadInterval)
+        if (vm.store.enableConfigFileReload) {
           vm.configFetch()
         }
-      }, vm.$store.state.configFileReloadInterval)
+      }, vm.store.configFileReloadInterval)
     }
   },
   created () {

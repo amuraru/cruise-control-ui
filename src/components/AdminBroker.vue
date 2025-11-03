@@ -579,13 +579,18 @@
 // Disable this due to https://github.com/linkedin/cruise-control-ui/issues/40
 // import xssFilters from 'xss-filters'
 import goals from '@/goals'
-import BrokerState from '@/components/BrokerState'
+import BrokerState from '@/components/BrokerState.vue'
+import { useAppStore } from '@/store'
 
 export default {
   name: 'AdminBroker',
   props: {
     group: String,
     cluster: String
+  },
+  setup() {
+    const store = useAppStore()
+    return { store }
   },
   components: {
     BrokerState
@@ -651,7 +656,7 @@ export default {
   },
   computed: {
     taskId () {
-      return this.$store.getters.getTaskId(this.url)
+      return this.store.getTaskId(this.url)
     },
     disableGoals () {
       return this.kafka_assigner || this.use_ready_default_goals
@@ -866,8 +871,8 @@ export default {
       this.postResponse = ''
     },
     argsChanged () {
-      const newurl = this.$store.getters.getnewurl(this.group, this.cluster)
-      this.$store.commit('seturl', newurl)
+      const newurl = this.store.getnewurl(this.group, this.cluster)
+      this.store.seturl(newurl)
       this.loaded = false
       this.newurl = newurl
       this.clearPostResponse()
@@ -880,9 +885,9 @@ export default {
       let params = {
         withCredentials: true
       }
-      // check if there is a running user-task-id for this end point in the $store
-      // let task = this.$store.getters.getTaskId('proposals')
-      let task = this.$store.getters.getTaskId(vm.actionURL)
+      // check if there is a running user-task-id for this end point in the store
+      // let task = this.store.getTaskId('proposals')
+      let task = vm.store.getTaskId(vm.actionURL)
       if (task) {
         params['headers'] = {
           'User-Task-ID': task
@@ -893,7 +898,7 @@ export default {
         vm.detectedUserTaskId = r.headers.hasOwnProperty('user-task-id')
         // store this task in local cache for future follow-up
         let task = r.headers.hasOwnProperty('user-task-id') ? r.headers['user-task-id'] : null
-        vm.$store.commit('setTaskId', {url: vm.actionURL, taskid: task}) // save this task for follow-up calls (null deletes in vuex)
+        vm.store.setTaskId({url: vm.actionURL, taskid: task}) // save this task for follow-up calls (null deletes in pinia)
         vm.posted = true
         vm.postResponse = r.data
       }, (e) => {

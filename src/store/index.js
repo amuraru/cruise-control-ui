@@ -1,12 +1,9 @@
 // Copyright 2017-2019 LinkedIn Corp. Licensed under the BSD 2-Clause License (the "License"). See License in the project root for license information.
 
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { defineStore } from 'pinia'
 
-Vue.use(Vuex)
-
-export default new Vuex.Store({
-  state: {
+export const useAppStore = defineStore('app', {
+  state: () => ({
     chartColors: ['#ffffd9', '#edf8b1', '#c7e9b4', '#7fcdbb', '#41b6c4', '#1d91c0', '#225ea8', '#253494', '#081d58'],
     configurl: './static/config.csv', // path to the cruise-control REST end-points
     config: {}, // remote cc urls information
@@ -40,45 +37,35 @@ export default new Vuex.Store({
     userTasks: {
       // url: uuid (is the structure for this)
     }
-  },
+  }),
   getters: {
-    geturl: function (state) {
-      return state.url
-    },
-    getnewurl: function (state, getters) {
-      return function (group, label) {
-        return state.config[group][label]
-      }
-    },
-    getTaskId: function (state, getters) {
-      return function (url) {
-        return state.userTasks[url]
-      }
-    }
+    geturl: (state) => state.url,
+    getnewurl: (state) => (group, label) => state.config[group][label],
+    getTaskId: (state) => (url) => state.userTasks[url]
   },
-  mutations: {
-    seturl: function (state, url) {
-      state.url = url
+  actions: {
+    seturl (url) {
+      this.url = url
     },
-    setonline: function (state, online) {
-      state.online = online
+    setonline (online) {
+      this.online = online
     },
-    config: function (state, newconfig) {
-      state.config = newconfig
+    setConfig (newconfig) {
+      this.config = newconfig
     },
-    configError: function (state, val) {
-      state.configError = val
+    setConfigError (val) {
+      this.configError = val
     },
-    configErrorMessage: function (state, val) {
-      state.configErrorMessage = val
+    setConfigErrorMessage (val) {
+      this.configErrorMessage = val
     },
-    setTaskId: function (state, params) {
+    setTaskId (params) {
       if (params.taskid) {
         // set if the taskid is valid
-        Vue.set(state.userTasks, params.url, params.taskid)
+        this.userTasks[params.url] = params.taskid
       } else {
         // delete if the taskid is invalid
-        Vue.delete(state.userTasks, params.url)
+        delete this.userTasks[params.url]
       }
     }
   }

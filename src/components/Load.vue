@@ -35,8 +35,9 @@
 </template>
 
 <script>
-import HostLoad from '@/components/HostLoad'
-import BrokerLoad from '@/components/BrokerLoad'
+import HostLoad from '@/components/HostLoad.vue'
+import BrokerLoad from '@/components/BrokerLoad.vue'
+import { useAppStore } from '@/store'
 
 export default {
   name: 'Load',
@@ -44,6 +45,10 @@ export default {
     group: String,
     cluster: String,
     rawdata: Object
+  },
+  setup() {
+    const store = useAppStore()
+    return { store }
   },
   data () {
     return {
@@ -79,7 +84,7 @@ export default {
   },
   computed: {
     taskId () {
-      return this.$store.getters.getTaskId(this.url)
+      return this.store.getTaskId(this.url)
     },
     url () {
       // KCC Supports additional parameters as well.
@@ -91,13 +96,13 @@ export default {
       return this.$helpers.getURL('load', params)
     },
     hideHelperURL () {
-      return this.$store.state.hideHelperURL
+      return this.store.hideHelperURL
     }
   },
   methods: {
     argsChanged () {
-      const newurl = this.$store.getters.getnewurl(this.group, this.cluster)
-      this.$store.commit('seturl', newurl)
+      const newurl = this.store.getnewurl(this.group, this.cluster)
+      this.store.seturl(newurl)
       this.loaded = false
       this.newurl = newurl
       this.getLoad()
@@ -110,9 +115,9 @@ export default {
       let params = {
         withCredentials: true
       }
-      // check if there is a running user-task-id for this end point in the $store
-      // let task = this.$store.getters.getTaskId('proposals')
-      let task = this.$store.getters.getTaskId(vm.url)
+      // check if there is a running user-task-id for this end point in the store
+      // let task = this.store.getTaskId('proposals')
+      let task = vm.store.getTaskId(vm.url)
       if (task) {
         params['headers'] = {
           'User-Task-ID': task
@@ -128,7 +133,7 @@ export default {
         } else if (r.headers['content-type'].match(/text\/plain/) || r.data.progress) {
           // capture the user-task-id only if the response is Async one
           let task = r.headers.hasOwnProperty('user-task-id') ? r.headers['user-task-id'] : null
-          vm.$store.commit('setTaskId', {url: vm.url, taskid: task}) // save this task for follow-up calls (null deletes in vuex)
+          vm.store.setTaskId({url: vm.url, taskid: task}) // save this task for follow-up calls (null deletes in pinia)
           vm.async = true
           vm.asyncData = r.data
           vm.showAsyncRefreshButton = true

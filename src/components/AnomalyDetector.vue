@@ -57,12 +57,12 @@
           </thead>
           <tbody>
             <tr v-for='r in AnomalyDetectorState.recentBrokerFailures'>
-              <td>{{ r.detectionMs | formatLocalTime }} ago</td>
+              <td>{{ $formatLocalTime(r.detectionMs) }} ago</td>
               <td>
                 <ul class="list-group">
                   <li class="list-group-item d-flex justify-content-between align-items-center" v-for="(time, broker) in r.failedBrokersByTimeMs">
                     {{ broker }}
-                    <span class="badge badge-primary badge-pill">{{ time | formatLocalTime }} ago</span>
+                    <span class="badge badge-primary badge-pill">{{ $formatLocalTime(time) }} ago</span>
                   </li>
                 </ul>
               </td>
@@ -82,7 +82,7 @@
           </thead>
           <tbody>
             <tr v-for="r in AnomalyDetectorState.recentGoalViolations">
-              <td>{{ r.detectionMs | formatLocalTime }} ago</td>
+              <td>{{ $formatLocalTime(r.detectionMs) }} ago</td>
               <td>
                 <!-- Depedning on the version of CC we use, two types of responses are being sent out -->
                 <template v-if='r.hasOwnProperty("violatedGoals")'>
@@ -119,7 +119,7 @@
           </thead>
           <tbody>
             <tr v-for="r in AnomalyDetectorState.recentIntraBrokerGoalViolations">
-              <td>{{ r.detectionMs | formatLocalTime }} ago</td>
+              <td>{{ $formatLocalTime(r.detectionMs) }} ago</td>
               <td>
                 <!-- Depedning on the version of CC we use, two types of responses are being sent out -->
                 <template v-if='r.hasOwnProperty("violatedGoals")'>
@@ -156,7 +156,7 @@
           </thead>
           <tbody>
             <tr v-for='r in AnomalyDetectorState.recentMetricAnomalies'>
-              <td>{{ r.detectionMs | formatLocalTime }} ago</td>
+              <td>{{ $formatLocalTime(r.detectionMs) }} ago</td>
               <td>{{ r.description }}</td>
             </tr>
           </tbody>
@@ -168,7 +168,7 @@
 </template>
 
 <script>
-import BooleanEL from '@/components/BooleanEL'
+import BooleanEL from '@/components/BooleanEL.vue'
 
 export default {
   name: 'AnomalyDetector',

@@ -1,7 +1,7 @@
 <!-- Copyright 2017-2019 LinkedIn Corp. Licensed under the BSD 2-Clause License (the "License"). See License in the project root for license information. -->
 <template>
   <div>
-    <div class="alert alert-info" v-if='!$store.state.hideHelperURL'>
+    <div class="alert alert-info" v-if='!store.hideHelperURL'>
       <b>URL ({{group}}, {{cluster}}):</b> <a target=_blank :href='url'>{{ url }}</a>
     </div>
     <div v-if='!loading'>
@@ -65,8 +65,9 @@
 </template>
 
 <script>
-import KafkaBrokerState from '@/components/KafkaBrokerState'
-import KafkaPartitionState from '@/components/KafkaPartitionState'
+import KafkaBrokerState from '@/components/KafkaBrokerState.vue'
+import KafkaPartitionState from '@/components/KafkaPartitionState.vue'
+import { useAppStore } from '@/store'
 
 export default {
   name: 'KafkaClusterState',
@@ -77,6 +78,10 @@ export default {
   components: {
     KafkaBrokerState,
     KafkaPartitionState
+  },
+  setup() {
+    const store = useAppStore()
+    return { store }
   },
   data () {
     return {
@@ -150,9 +155,13 @@ export default {
   },
   methods: {
     argsChanged () {
-      const newurl = this.$store.getters.getnewurl(this.group, this.cluster)
+      if (!this.group || !this.cluster) {
+        console.warn('KafkaClusterState: group or cluster not provided', { group: this.group, cluster: this.cluster })
+        return
+      }
+      const newurl = this.store.getnewurl(this.group, this.cluster)
       // console.log(newurl)
-      this.$store.commit('seturl', newurl)
+      this.store.seturl(newurl)
       this.loaded = false
       this.newurl = newurl
       this.getKafkaState()

@@ -40,7 +40,7 @@
             <td>{{ numReplicaMovements }}</td>
             <td>{{ numLeaderMovements }}</td>
             <td>{{ recentWindows }}</td>
-            <td>{{ dataToMoveMB | formatUnits }}</td>
+            <td>{{ $formatUnits(dataToMoveMB) }}</td>
             <td>{{ monitoredPartitionsPercentage ? monitoredPartitionsPercentage.toFixed(2) : null }}%</td>
           </tr>
         </tbody>
@@ -110,8 +110,8 @@
 </template>
 
 <script>
-import DiffCell from '@/components/DiffCell'
-import Goal from '@/components/Goal'
+import DiffCell from '@/components/DiffCell.vue'
+import Goal from '@/components/Goal.vue'
 
 export default {
   name: 'Proposals',

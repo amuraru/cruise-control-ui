@@ -132,12 +132,17 @@
 
 <script>
 import xssFilters from 'xss-filters'
+import { useAppStore } from '@/store'
 
 export default {
   name: 'PartitionLoad',
   props: {
     group: String,
     cluster: String
+  },
+  setup() {
+    const store = useAppStore()
+    return { store }
   },
   data () {
     return {
@@ -184,7 +189,7 @@ export default {
   },
   computed: {
     taskId () {
-      return this.$store.getters.getTaskId(this.url)
+      return this.store.getTaskId(this.url)
     },
     apiMinorVersion () {
       // NnwOutRate has been changed to NwOutRate and Upstream
@@ -196,7 +201,7 @@ export default {
       }
     },
     hideHelperURL () {
-      return this.$store.state.hideHelperURL
+      return this.store.hideHelperURL
     },
     url () {
       let params = {
@@ -228,8 +233,8 @@ export default {
       this.getPartitionLoad()
     },
     argsChanged () {
-      const newurl = this.$store.getters.getnewurl(this.group, this.cluster)
-      this.$store.commit('seturl', newurl)
+      const newurl = this.store.getnewurl(this.group, this.cluster)
+      this.store.seturl(newurl)
       this.loaded = false
       this.newurl = newurl
       this.getPartitionLoad()
@@ -260,7 +265,7 @@ export default {
           vm.errorData = 'CruiseControl sent an empty response with 200-OK status code. Please file a bug here https://github.com/linkedin/cruise-control/issues'
         } else if (r.headers['content-type'].match(/text\/plain/) || r.data.progress) {
           let task = r.headers.hasOwnProperty('user-task-id') ? r.headers['user-task-id'] : null
-          vm.$store.commit('setTaskId', {url: vm.url, taskid: task}) // save this task for follow-up calls (null deletes in vuex)
+          vm.store.setTaskId({url: vm.url, taskid: task}) // save this task for follow-up calls (null deletes in pinia)
           vm.async = true
           vm.asyncData = r.data
           vm.showAsyncRefreshButton = true

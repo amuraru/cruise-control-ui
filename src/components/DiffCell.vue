@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import BrokerState from '@/components/BrokerState'
+import BrokerState from '@/components/BrokerState.vue'
 
 export default {
   name: 'DiffCell',

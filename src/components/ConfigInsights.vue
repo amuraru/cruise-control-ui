@@ -41,8 +41,8 @@
 </template>
 
 <script>
-import BooleanEL from '@/components/BooleanEL'
-var Url = require('url-parse')
+import BooleanEL from '@/components/BooleanEL.vue'
+import Url from 'url-parse'
 export default {
   name: 'ConfigInsights',
   components: {

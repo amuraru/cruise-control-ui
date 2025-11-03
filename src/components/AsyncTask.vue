@@ -22,7 +22,7 @@
               <td>{{ step.step }}</td>
               <td>{{ step.description }}</td>
               <td>{{ step.completionPercentage }} <i>%</i></td>
-              <td>{{ step['time-in-ms'] | formatNumber }} <i>ms</i></td>
+              <td>{{ $formatNumber(step['time-in-ms']) }} <i>ms</i></td>
             </tr>
           </tbody>
           <tfoot>
@@ -33,7 +33,7 @@
             </tr>
             <tr>
               <th colspan=4>Total Time (ms)</th>
-              <th>{{ totalTime | formatNumber }} <i>ms</i></th>
+              <th>{{ $formatNumber(totalTime) }} <i>ms</i></th>
             </tr>
           </tfoot>
         </table>

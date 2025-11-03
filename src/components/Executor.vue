@@ -58,19 +58,19 @@
                     <div class="progress-bar progress-bar-striped progress-bar-animated" :style="'width:' + ExecutorState.finishedDataMovement / ExecutorState.totalDataToMove * 100 + '%'">Done</div>
                   </div>
                 </div>
-                <h1 class="text-primary">{{ ExecutorState.totalDataToMove | formatUnits }}</h1>
+                <h1 class="text-primary">{{ $formatUnits(ExecutorState.totalDataToMove) }}</h1>
               </div>
             </div>
             <div class="card">
               <div class="card-header">Finished Data Movement</div>
               <div class="card-body">
-                <p class="card-text"><h1 class="text-success">{{ ExecutorState.finishedDataMovement | formatUnits }}</h1></p>
+                <div class="card-text"><h1 class="text-success">{{ $formatUnits(ExecutorState.finishedDataMovement) }}</h1></div>
               </div>
             </div>
             <div class="card">
               <div class="card-header">Remaining Data</div>
               <div class="card-body">
-                <p class="card-text"><h1 class="text-info">{{ ExecutorState.totalDataToMove - ExecutorState.finishedDataMovement | formatUnits }}</h1></p>
+                <div class="card-text"><h1 class="text-info">{{ $formatUnits(ExecutorState.totalDataToMove - ExecutorState.finishedDataMovement) }}</h1></div>
               </div>
             </div>
           </div>
@@ -85,19 +85,19 @@
                     <div class="progress-bar progress-bar-striped progress-bar-animated" :style="'width:' + ExecutorState.numFinishedLeadershipMovements / ExecutorState.numTotalLeadershipMovements * 100 + '%'">Done</div>
                   </div>
                 </div>
-                <h1 class="text-primary">{{ ExecutorState.numTotalLeadershipMovements | formatNumber }}</h1>
+                <h1 class="text-primary">{{ $formatNumber(ExecutorState.numTotalLeadershipMovements) }}</h1>
               </div>
             </div>
             <div class="card">
               <div class="card-header">Finished Leadership Movements</div>
               <div class="card-body">
-                <p class="card-text"><h1 class="text-success">{{ ExecutorState.numFinishedLeadershipMovements | formatNumber }}</h1></p>
+                <div class="card-text"><h1 class="text-success">{{ $formatNumber(ExecutorState.numFinishedLeadershipMovements) }}</h1></div>
               </div>
             </div>
             <div class="card">
               <div class="card-header">Remaining Leadership Movements</div>
               <div class="card-body">
-                <p class="card-text"><h1 class="text-info">{{ ExecutorState.numTotalLeadershipMovements - ExecutorState.numFinishedLeadershipMovements | formatNumber }}</h1></p>
+                <div class="card-text"><h1 class="text-info">{{ $formatNumber(ExecutorState.numTotalLeadershipMovements - ExecutorState.numFinishedLeadershipMovements) }}</h1></div>
               </div>
             </div>
           </div>
@@ -113,19 +113,19 @@
                     <div class="progress-bar progress-bar-striped progress-bar-animated" :style="'width:' + getInProgressPartitionMovements.length / ExecutorState.numTotalPartitionMovements * 100 + '%'">In Progress</div>
                   </div>
                 </div>
-                <h1 class="text-primary">{{ ExecutorState.numTotalPartitionMovements | formatNumber }}</h1>
+                <h1 class="text-primary">{{ $formatNumber(ExecutorState.numTotalPartitionMovements) }}</h1>
               </div>
             </div>
             <div class="card">
               <div class="card-header">Finished Partition Movements</div>
               <div class="card-body">
-                <p class="card-text"><h1 class="text-success">{{ ExecutorState.numFinishedPartitionMovements | formatNumber }}</h1></p>
+                <div class="card-text"><h1 class="text-success">{{ $formatNumber(ExecutorState.numFinishedPartitionMovements) }}</h1></div>
               </div>
             </div>
             <div class="card">
               <div class="card-header">Remaining Partition Movements</div>
               <div class="card-body">
-                <p class="card-text"><h1 class="text-info">{{ ExecutorState.numTotalPartitionMovements - ExecutorState.numFinishedPartitionMovements | formatNumber }}</h1></p>
+                <div class="card-text"><h1 class="text-info">{{ $formatNumber(ExecutorState.numTotalPartitionMovements - ExecutorState.numFinishedPartitionMovements) }}</h1></div>
               </div>
             </div>
           </div>
@@ -133,19 +133,19 @@
             <div class="card">
               <div class="card-header">Aborting Partitions</div>
               <div class="card-body">
-                <p class="card-text"><h1 class="text-primary">{{ ExecutorState.abortingPartitions }}</h1></p>
+                <div class="card-text"><h1 class="text-primary">{{ ExecutorState.abortingPartitions }}</h1></div>
               </div>
             </div>
             <div class="card">
               <div class="card-header">Aborted Partitions</div>
               <div class="card-body">
-                <p class="card-text"><h1 class="text-success">{{ ExecutorState.abortedPartitions }}</h1></p>
+                <div class="card-text"><h1 class="text-success">{{ ExecutorState.abortedPartitions }}</h1></div>
               </div>
             </div>
             <div class="card">
               <div class="card-header">Dead Partitions</div>
               <div class="card-body">
-                <p class="card-text"><h1 class="text-info">{{ ExecutorState.deadPartitions }}</h1></p>
+                <div class="card-text"><h1 class="text-info">{{ ExecutorState.deadPartitions }}</h1></div>
               </div>
             </div>
           </div>
@@ -294,7 +294,7 @@
 </template>
 
 <script>
-import BooleanEL from '@/components/BooleanEL'
+import BooleanEL from '@/components/BooleanEL.vue'
 
 export default {
   name: 'Executor',

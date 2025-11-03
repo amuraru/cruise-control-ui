@@ -43,15 +43,15 @@
               <template v-for="replica in broker.replicas">
                 <tr>
                   <td>{{ rack.rackid }}</td>
-                  <td>{{ host.name | formatHost }}</td>
+                  <td>{{ $formatHost(host.name) }}</td>
                   <td>{{ broker.brokerid }}</td>
                   <td>{{ replica.topic + '-' + replica.partition }}</td>
                   <td>{{ replica.isLeader }}</td>
                   <template v-if='replica.load && replica.load.snapshots'>
-                  <td>{{ replica.load.snapshots[0].disk | formatUnits }}</td>
+                  <td>{{ $formatUnits(replica.load.snapshots[0].disk) }}</td>
                   <td>{{ replica.load.snapshots[0].cpu.toFixed(0) }}</td>
-                  <td>{{ replica.load.snapshots[0].networkOutbound | formatNetworkUnits }}</td>
-                  <td>{{ replica.load.snapshots[0].networkInbound | formatNetworkUnits }}</td>
+                  <td>{{ $formatNetworkUnits(replica.load.snapshots[0].networkOutbound) }}</td>
+                  <td>{{ $formatNetworkUnits(replica.load.snapshots[0].networkInbound) }}</td>
                   </template>
                   <template v-else>
                   <td colspan=6 class='alert alert-warning text-center'>No Load data available.</td>
@@ -62,7 +62,7 @@
             <template v-for="broker in host.brokers" v-else>
               <tr>
                 <td>{{ rack.rackid }}</td>
-                <td>{{ host.name | formatHost }}</td>
+                <td>{{ $formatHost(host.name) }}</td>
                 <td>{{ broker.brokerid }}</td>
                 <td colspan=6 class='alert alert-warning text-center'>No replica details available.</td>
               </tr>

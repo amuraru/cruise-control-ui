@@ -1,99 +1,57 @@
 // Copyright 2017-2019 LinkedIn Corp. Licensed under the BSD 2-Clause License (the "License"). See License in the project root for license information.
 
-import Vue from 'vue'
-import Router from 'vue-router'
-import Page from '@/components/Page'
-import Load from '@/components/Load'
-import ReplicaLoad from '@/components/ReplicaLoad'
-import Proposals from '@/components/Proposals'
-import State from '@/components/State'
-import Monitor from '@/components/Monitor'
-import Executor from '@/components/Executor'
-import Analyzer from '@/components/Analyzer'
-import AnomalyDetector from '@/components/AnomalyDetector'
-import PartitionLoad from '@/components/PartitionLoad'
-import KafkaClusterState from '@/components/KafkaClusterState'
-import Preferences from '@/components/Preferences'
-import AdminBroker from '@/components/AdminBroker'
-import AdminSampling from '@/components/AdminSampling'
-import UserTasks from '@/components/UserTasks'
-import ConfigInsights from '@/components/ConfigInsights'
-import ResourceDistribution from '@/components/ResourceDistribution'
-import PeerReview from '@/components/PeerReview'
-import store from '@/store'
-import Summary from '@/components/Summary'
+import { createRouter, createWebHistory } from 'vue-router'
+import Page from '@/components/Page.vue'
+import Load from '@/components/Load.vue'
+import ReplicaLoad from '@/components/ReplicaLoad.vue'
+import Proposals from '@/components/Proposals.vue'
+import State from '@/components/State.vue'
+import Monitor from '@/components/Monitor.vue'
+import Executor from '@/components/Executor.vue'
+import Analyzer from '@/components/Analyzer.vue'
+import AnomalyDetector from '@/components/AnomalyDetector.vue'
+import PartitionLoad from '@/components/PartitionLoad.vue'
+import KafkaClusterState from '@/components/KafkaClusterState.vue'
+import Preferences from '@/components/Preferences.vue'
+import AdminBroker from '@/components/AdminBroker.vue'
+import AdminSampling from '@/components/AdminSampling.vue'
+import UserTasks from '@/components/UserTasks.vue'
+import ConfigInsights from '@/components/ConfigInsights.vue'
+import ResourceDistribution from '@/components/ResourceDistribution.vue'
+import PeerReview from '@/components/PeerReview.vue'
+import { useAppStore } from '@/store'
+import Summary from '@/components/Summary.vue'
 
-Vue.use(Router)
-
-export default new Router({
+const router = createRouter({
+  history: createWebHistory(),
   linkActiveClass: '',
   linkExactActiveClass: 'active',
   routes: [
     {
       name: 'main',
       path: '/',
-      redirect: '/a/b'
+      redirect: '/page'
     },
     {
-      name: 'summary',
+      // Handle legacy hash routes
+      path: '/a/b',
+      redirect: '/page'
+    },
+    {
+      // Handle direct summary access
       path: '/summary',
-      component: Summary
-    },
-    {
-      name: 'preferences',
-      path: '/preferences',
-      component: Preferences
-    },
-    {
-      name: 'configInsights',
-      path: '/configInsights',
-      component: ConfigInsights
+      redirect: '/page/summary'
     },
     {
       name: 'page',
-      path: '/:group/:cluster',
+      path: '/page/:group?/:cluster?',
       component: Page,
+      props: true,
       children: [
         {
-          name: 'page.state',
-          path: 'state',
-          component: State,
-          redirect: {
-            name: 'page.state.executor'
-          },
-          props: true,
-          children: [
-            {
-              name: 'page.state.monitor',
-              path: 'monitor',
-              component: Monitor,
-              props: true
-            },
-            {
-              name: 'page.state.analyzer',
-              path: 'analyzer',
-              component: Analyzer,
-              props: true
-            },
-            {
-              name: 'page.state.executor',
-              path: 'executor',
-              component: Executor,
-              props: true
-            },
-            {
-              name: 'page.state.anomaly_detector',
-              path: 'anomaly_detector',
-              component: AnomalyDetector,
-              props: true
-            }
-          ]
-        },
-        {
-          name: 'page.kafkaclusterstate',
-          path: 'kafka_cluster_state',
-          component: KafkaClusterState,
-          props: true
+          name: 'page.default',
+          path: '',
+          redirect: 'summary'
         },
         {
           name: 'page.load',
@@ -108,16 +66,66 @@ export default new Router({
           props: true
         },
         {
+          name: 'page.partitionload',
+          path: 'partitionload',
+          component: PartitionLoad,
+          props: true
+        },
+        {
           name: 'page.proposals',
           path: 'proposals',
           component: Proposals,
           props: true
         },
         {
-          name: 'page.partitionload',
-          path: 'partitionload',
-          component: PartitionLoad,
+          name: 'page.state',
+          path: 'state',
+          component: State,
+          props: true,
+          children: [
+            {
+              name: 'page.state.default',
+              path: '',
+              redirect: 'monitor'
+            },
+            {
+              name: 'page.state.executor',
+              path: 'executor',
+              component: Executor,
+              props: true
+            },
+            {
+              name: 'page.state.monitor',
+              path: 'monitor',
+              component: Monitor,
+              props: true
+            },
+            {
+              name: 'page.state.analyzer',
+              path: 'analyzer',
+              component: Analyzer,
+              props: true
+            },
+            {
+              name: 'page.state.anomaly_detector',
+              path: 'anomaly_detector',
+              component: AnomalyDetector,
+              props: true
+            }
+          ]
+        },
+        {
+          name: 'page.kafkaclusterstate',
+          path: 'kafkaclusterstate',
+          component: KafkaClusterState,
           props: true
+        },
+
+        {
+          name: 'page.preferences',
+          path: 'preferences',
+          component: Preferences,
+          props: false
         },
         {
           name: 'page.user_tasks',
@@ -126,15 +134,27 @@ export default new Router({
           props: true
         },
         {
-          name: 'page.admin_state',
-          path: 'admin_state',
-          component: AdminSampling,
+          name: 'page.config_insights',
+          path: 'config_insights',
+          component: ConfigInsights,
+          props: false
+        },
+        {
+          name: 'page.resource_distribution',
+          path: 'resource_distribution',
+          component: ResourceDistribution,
           props: true
         },
         {
-          name: 'page.resource_distributions',
-          path: 'resource_distributions',
-          component: ResourceDistribution,
+          name: 'page.summary',
+          path: 'summary',
+          component: Summary,
+          props: false
+        },
+        {
+          name: 'page.admin_sampling',
+          path: 'admin_sampling',
+          component: AdminSampling,
           props: true
         },
         {
@@ -152,10 +172,14 @@ export default new Router({
       ],
       props: true
     }
-  ],
-  beforeEach: function (to, from, next) {
-    console.log('called before each : %s -> %s', to, from)
-    store.commit('seturl', to)
-    next()
-  }
+  ]
 })
+
+router.beforeEach((to, from, next) => {
+  console.log('called before each : %s -> %s', to, from)
+  const store = useAppStore()
+  store.seturl(to)
+  next()
+})
+
+export default router

@@ -40,7 +40,7 @@
         <div class="card text-center">
           <div class="card-header">Snapshots</div>
           <div class="card-body">
-            <p class="card-text"><h1 :class="[MonitorState.numMonitoredWindows < 1 ? 'text-info' : 'text-success']">{{ MonitorState.numMonitoredWindows }}</h1></p>
+            <div class="card-text"><h1 :class="[MonitorState.numMonitoredWindows < 1 ? 'text-info' : 'text-success']">{{ MonitorState.numMonitoredWindows }}</h1></div>
           </div>
         </div>
       </div>
@@ -49,19 +49,19 @@
         <div class="card text-center">
           <div class="card-header">Total Kafka Partitions</div>
           <div class="card-body">
-            <p class="card-text"><h1 :class="['text-center', MonitorState.numTotalPartitions < 1 ? 'text-info' : 'text-success']">{{ MonitorState.numTotalPartitions | formatNumber }}</h1></p>
+            <div class="card-text"><h1 :class="['text-center', MonitorState.numTotalPartitions < 1 ? 'text-info' : 'text-success']">{{ $formatNumber(MonitorState.numTotalPartitions) }}</h1></div>
           </div>
         </div>
         <div class="card text-center">
           <div class="card-header">Valid Kafka Partitions</div>
           <div class="card-body">
-            <p class="card-text"><h1 :class="['text-center', MonitorState.numValidPartitions != MonitorState.numTotalPartitions ? 'text-info' : 'text-success']">{{ MonitorState.numValidPartitions | formatNumber }}</h1></p>
+            <div class="card-text"><h1 :class="['text-center', MonitorState.numValidPartitions != MonitorState.numTotalPartitions ? 'text-info' : 'text-success']">{{ $formatNumber(MonitorState.numValidPartitions) }}</h1></div>
           </div>
         </div>
         <div class="card text-center">
           <div class="card-header">Flawed Kafka Partitions</div>
           <div class="card-body">
-            <p class="card-text"><h1 :class="['text-center', MonitorState.numFlawedPartitions < 1 ? 'text-success' : 'text-info']">{{ MonitorState.numFlawedPartitions | formatNumber }}</h1></p>
+            <div class="card-text"><h1 :class="['text-center', MonitorState.numFlawedPartitions < 1 ? 'text-success' : 'text-info']">{{ $formatNumber(MonitorState.numFlawedPartitions) }}</h1></div>
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import BooleanEL from '@/components/BooleanEL'
+import BooleanEL from '@/components/BooleanEL.vue'
 
 export default {
   name: 'Monitor',

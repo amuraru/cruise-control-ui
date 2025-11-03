@@ -42,7 +42,7 @@
           <router-link class="nav-link" :to='{"name": "page.user_tasks", params: { group: group, cluster: cluster } }'>Cruise Control Tasks</router-link>
           </li>
           <li class="nav-item" v-if='modules.chart_page'>
-          <router-link class="nav-link" :to='{"name": "page.resource_distributions", params: { group: group, cluster: cluster } }'>Resource distributions</router-link>
+          <router-link class="nav-link" :to='{"name": "page.resource_distribution", params: { group: group, cluster: cluster } }'>Resource distributions</router-link>
           </li>
           <!--
           <li class="nav-item" v-if='modules.admin_state'>
@@ -58,30 +58,38 @@
         </ul>
       </div>
       <div class="card-body">
-        <transition name="fade" mode="out-in">
-        <router-view></router-view><!-- this will render child components -->
-        </transition>
+        <router-view v-slot="{ Component }">
+          <transition name="fade" mode="out-in">
+            <component :is="Component" /><!-- this will render child components -->
+          </transition>
+        </router-view>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Offline from '@/components/Offline'
+import Offline from '@/components/Offline.vue'
+import { useAppStore } from '@/store'
+
 export default {
   name: 'Page',
   props: {
     group: String,
     cluster: String
   },
+  setup() {
+    const store = useAppStore()
+    return { store }
+  },
   data () {
     return {
-      modules: this.$store.state.modules
+      modules: this.store.modules
     }
   },
   computed: {
     configloaded () {
-      return Object.keys(this.$store.state.config).length > 0
+      return Object.keys(this.store.config).length > 0
     }
   },
   components: {

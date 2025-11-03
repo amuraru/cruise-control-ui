@@ -1,11 +1,31 @@
 /* Copyright 2017-2019 LinkedIn Corp. Licensed under the BSD 2-Clause License (the "License"). See License in the project root for license information. */
-import store from '@/store'
+import { useAppStore } from '@/store'
 import buildUrl from 'build-url'
 import parse from 'url-parse'
-import Vue from 'vue'
+import mitt from 'mitt'
+
+// Store instance for non-component usage
+let globalStore = null
+
+function setGlobalStore(store) {
+  globalStore = store
+}
 
 function getURL (type, params) {
-  var url = store.state.url
+  // Try to get store from current context or use global store
+  let store
+  try {
+    store = useAppStore()
+  } catch (e) {
+    store = globalStore
+  }
+
+  if (!store || !store.url) {
+    console.warn('Store not available in getURL')
+    return null
+  }
+
+  var url = store.url
   var parsed = parse(url)
   if (params === undefined || params == null) {
     params = {}
@@ -38,8 +58,12 @@ function datafix (v, _default) {
   }
 }
 
+// Create event bus for Vue 3
+const eventBus = mitt()
+
 export default {
   getURL: getURL,
   datafix: datafix,
-  eventBus: new Vue()
+  eventBus: eventBus,
+  setGlobalStore: setGlobalStore
 }

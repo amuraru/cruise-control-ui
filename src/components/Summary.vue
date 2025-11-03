@@ -34,16 +34,21 @@
 </template>
 
 <script>
-import SummaryRow from '@/components/SummaryRow'
+import SummaryRow from '@/components/SummaryRow.vue'
+import { useAppStore } from '@/store'
 
 export default {
   name: 'Summary',
   components: {
     SummaryRow
   },
+  setup() {
+    const store = useAppStore()
+    return { store }
+  },
   computed: {
     config () {
-      return this.$store.state.config
+      return this.store.config
     },
     groups () {
       return this.config ? ['all'].concat(Object.keys(this.config)) : ['all']
