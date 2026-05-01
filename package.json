@@ -14,7 +14,7 @@
   "dependencies": {
     "axios": "^0.28.1",
     "bootstrap": "^4.6.2",
-    "bootswatch": "^4.6.2",
+    "bootswatch": "^5.0.0",
     "build-url": "^1.0.10",
     "chart.js": "^2.9.4",
     "jquery": "^3.7.1",
