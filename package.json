@@ -15,7 +15,7 @@
     "axios": "^0.28.1",
     "bootstrap": "^4.6.2",
     "bootswatch": "^4.6.2",
-    "build-url": "^1.0.10",
+    "build-url": "^6.0.0",
     "chart.js": "^2.9.4",
     "jquery": "^3.7.1",
     "lodash.sortby": "^4.7.0",
