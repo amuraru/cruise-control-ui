@@ -62,7 +62,7 @@
     "ora": "^5.4.1",
     "rimraf": "^2.7.1",
     "semver": "^5.7.1",
-    "shelljs": "^0.8.5",
+    "shelljs": "^0.10.0",
     "style-loader": "^0.23.1",
     "url-loader": "^1.1.2",
     "vue-loader": "^13.7.3",
