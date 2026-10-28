@@ -36,16 +36,16 @@
       </thead>
       <tbody>
         <tr v-for="e in sortedHosts">
-          <td>{{ e.Host | formatHost }}</td>
+          <td>{{ $formatters.formatHost(e.Host) }}</td>
           <td :class='e.Replicas < 1 ? "table-info" : null'>{{ e.Replicas }}</td>
           <td :class='e.Leaders < 1 ? "table-warning" : null'>{{ e.Leaders }}</td>
-          <td>{{ e.DiskMB | formatUnits }}</td>
+          <td>{{ $formatters.formatUnits(e.DiskMB) }}</td>
           <td>{{ e.CpuPct.toFixed(2) }} %</td>
-          <td>{{ e.LeaderNwInRate | formatNetworkUnits }}</td>
-          <td>{{ e.FollowerNwInRate | formatNetworkUnits }}</td>
-          <td v-if='apiMinorVersion === 2'>{{ e.NwOutRate | formatNetworkUnits }}</td>
-          <td v-if='apiMinorVersion === 1'>{{ e.NnwOutRate | formatNetworkUnits }}</td>
-          <td>{{ e.PnwOutRate | formatNetworkUnits }}</td>
+          <td>{{ $formatters.formatNetworkUnits(e.LeaderNwInRate) }}</td>
+          <td>{{ $formatters.formatNetworkUnits(e.FollowerNwInRate) }}</td>
+          <td v-if='apiMinorVersion === 2'>{{ $formatters.formatNetworkUnits(e.NwOutRate) }}</td>
+          <td v-if='apiMinorVersion === 1'>{{ $formatters.formatNetworkUnits(e.NnwOutRate) }}</td>
+          <td>{{ $formatters.formatNetworkUnits(e.PnwOutRate) }}</td>
           <td>{{ e.LeaderNwInRate > 0 ? Number(e.FollowerNwInRate / e.LeaderNwInRate).toFixed(4) : null }}</td>
           <td v-if='apiMinorVersion === 2'>{{ e.NwOutRate > 0 ? Number(e.LeaderNwInRate / e.NwOutRate).toFixed(4) : null }}</td>
           <td v-if='apiMinorVersion === 1'>{{ e.NnwOutRate > 0 ? Number(e.LeaderNwInRate / e.NnwOutRate).toFixed(4) : null }}</td>
@@ -57,15 +57,15 @@
 </template>
 
 <script>
-const sortBy = require('lodash.sortby')
+import sortBy from 'lodash.sortby'
 
 export default {
   name: 'HostLoad',
   props: {
     hosts: Array,
     loading: Boolean,
-    async: false, // when the server treats this request as async
-    asyncData: null, // when the server treats the request as async and sends progress instead of actual response
+    async: Boolean,
+    asyncData: [String, Object],
     error: Boolean,
     errorData: Object
   },

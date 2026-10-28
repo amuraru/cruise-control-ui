@@ -58,9 +58,11 @@
         </ul>
       </div>
       <div class="card-body">
-        <transition name="fade" mode="out-in">
-        <router-view></router-view><!-- this will render child components -->
-        </transition>
+        <router-view v-slot="{ Component, route }">
+          <transition name="fade" mode="out-in">
+            <component :is="Component" :key="route.path"></component>
+          </transition>
+        </router-view>
       </div>
     </div>
   </div>
@@ -80,8 +82,19 @@ export default {
     }
   },
   computed: {
+    backendURL () {
+      return this.$store.state.config[this.group]?.[this.cluster]
+    },
     configloaded () {
       return Object.keys(this.$store.state.config).length > 0
+    }
+  },
+  watch: {
+    backendURL: {
+      immediate: true,
+      handler (url) {
+        if (url) this.$store.commit('seturl', url)
+      }
     }
   },
   components: {

@@ -62,7 +62,7 @@ export default {
     this.loaded = false
     this.getKafkaState()
   },
-  beforeDestroy () {
+  beforeUnmount () {
     this.destroyed = true
     window.clearTimeout(this.timer)
   },

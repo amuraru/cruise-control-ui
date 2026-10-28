@@ -75,7 +75,7 @@ export default {
       this.start = (this.pageNumber - 1) * this.perpage
       this.end = Math.min(
         this.pageNumber * this.perpage,
-        this.partitions.length,
+        this.partitions.length
       )
       return this.partitions.slice(this.start, this.end)
     }

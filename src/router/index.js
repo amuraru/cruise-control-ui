@@ -1,7 +1,6 @@
 // Copyright 2017-2019 LinkedIn Corp. Licensed under the BSD 2-Clause License (the "License"). See License in the project root for license information.
 
-import Vue from 'vue'
-import Router from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import Page from '@/components/Page'
 import Load from '@/components/Load'
 import ReplicaLoad from '@/components/ReplicaLoad'
@@ -18,14 +17,11 @@ import AdminBroker from '@/components/AdminBroker'
 import AdminSampling from '@/components/AdminSampling'
 import UserTasks from '@/components/UserTasks'
 import ConfigInsights from '@/components/ConfigInsights'
-import ResourceDistribution from '@/components/ResourceDistribution'
 import PeerReview from '@/components/PeerReview'
-import store from '@/store'
 import Summary from '@/components/Summary'
 
-Vue.use(Router)
-
-export default new Router({
+export default createRouter({
+  history: createWebHashHistory(),
   linkActiveClass: '',
   linkExactActiveClass: 'active',
   routes: [
@@ -134,7 +130,7 @@ export default new Router({
         {
           name: 'page.resource_distributions',
           path: 'resource_distributions',
-          component: ResourceDistribution,
+          component: () => import('@/components/ResourceDistribution'),
           props: true
         },
         {
@@ -152,10 +148,5 @@ export default new Router({
       ],
       props: true
     }
-  ],
-  beforeEach: function (to, from, next) {
-    console.log('called before each : %s -> %s', to, from)
-    store.commit('seturl', to)
-    next()
-  }
+  ]
 })

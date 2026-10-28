@@ -1,20 +1,19 @@
+<template>
+  <Bar :data="chartData" :options="options"></Bar>
+</template>
+
 <script>
-import { Bar, mixins } from 'vue-chartjs'
-const { reactiveProp } = mixins
+import { Bar } from 'vue-chartjs'
+import { Chart, BarElement, CategoryScale, LinearScale, Legend, Title, Tooltip } from 'chart.js'
+
+Chart.register(BarElement, CategoryScale, LinearScale, Legend, Title, Tooltip)
 
 export default {
-  extends: Bar,
-  mixins: [reactiveProp],
-  props: ['chartData', 'options'],
-  mounted () {
-    // Overwriting base render method with actual data.
-    this.renderChart(this.chartData, this.options)
-  },
-  watch: {
-    options: function () {
-      this.$data._chart.options = this.options
-      this.$data._chart.update()
-    }
+  name: 'LineChart',
+  components: { Bar },
+  props: {
+    chartData: { type: Object, required: true },
+    options: Object
   }
 }
 </script>

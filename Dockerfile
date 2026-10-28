@@ -1,8 +1,8 @@
-FROM node:10 as base
+FROM node:24 AS base
 
 WORKDIR /opt/cruise-control-ui
 COPY package*.json ./
-RUN npm install --verbose --timeout=600000
+RUN npm ci
 COPY . .
 RUN npm run build
 

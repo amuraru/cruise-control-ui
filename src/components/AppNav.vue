@@ -76,9 +76,9 @@ export default {
             groups[group].push({label: label, url: url})
             // set the initial selected things
             if (notselected) {
-              vm.$set(vm.active, 'group', group)
-              vm.$set(vm.active, 'cluster', label)
-              vm.$set(vm.active, 'url', url)
+              vm.active.group = group
+              vm.active.cluster = label
+              vm.active.url = url
             }
           }
         }
@@ -114,7 +114,7 @@ export default {
   created () {
     this.configFetch()
   },
-  beforeDestroy () {
+  beforeUnmount () {
     try {
       window.clearInterval(this.csvTimer)
     } catch (e) {}

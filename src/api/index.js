@@ -1,8 +1,7 @@
 /* Copyright 2017-2019 LinkedIn Corp. Licensed under the BSD 2-Clause License (the "License"). See License in the project root for license information. */
-import store from '@/store'
+import store from '../store'
 import buildUrl from 'build-url'
 import parse from 'url-parse'
-import Vue from 'vue'
 
 function getURL (type, params) {
   var url = store.state.url
@@ -40,6 +39,5 @@ function datafix (v, _default) {
 
 export default {
   getURL: getURL,
-  datafix: datafix,
-  eventBus: new Vue()
+  datafix: datafix
 }

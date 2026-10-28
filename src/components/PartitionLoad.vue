@@ -97,7 +97,7 @@
     </div>
     <div v-else-if='async'>
       <div class="alert alert-info text-center" v-if='showAsyncRefreshButton'>
-        <button class="btn btn-sm btn-secondary" @click='getProposals()'>⟳ Refresh View Now (Task-Id: {{ taskId }} )</button>
+        <button class="btn btn-sm btn-secondary" @click='getPartitionLoad()'>⟳ Refresh View Now (Task-Id: {{ taskId }} )</button>
       </div>
       <async-task :asyncData='asyncData'></async-task>
     </div>
@@ -107,7 +107,7 @@
     <table class="table table-sm table-bordered" v-else-if='records.length > 0'>
       <thead>
         <tr>
-          <th :key='h' v-for="h in header">{{ h | camelCase }}</th>
+          <th :key='h' v-for="h in header">{{ $formatters.camelCase(h) }}</th>
         </tr>
       </thead>
       <transition-group name="fade" tag="tbody">
@@ -149,6 +149,7 @@ export default {
       errorData: null,
       async: false,
       asyncData: null,
+      showAsyncRefreshButton: false,
       // Form Elements
       resource: 'DISK',
       allResources: [
@@ -294,7 +295,7 @@ export default {
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s
 }
-.fade-enter, .fade-leave-to  {
+.fade-enter-from, .fade-leave-to  {
   opacity: 0
 }
 </style>

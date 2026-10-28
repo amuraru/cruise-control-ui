@@ -23,7 +23,7 @@
           </tr>
           <tr><th colspan=2 class='text-center'>Modules to Enable</th></tr>
           <tr v-for="(v, k) in $store.state.modules" :key='k'>
-            <td>Enable <b>{{ k | camelCase }}</b>  UI Module</td>
+            <td>Enable <b>{{ $formatters.camelCase(k) }}</b>  UI Module</td>
             <th><input type="checkbox" v-model="$store.state.modules[k]"></th>
           </tr>
           <tr><th colspan=2 class='text-center'>Server Exception Messages:</th></tr>
@@ -42,7 +42,6 @@
             <th><input type="number" min='3000' placeholder='3000' :disabled='!$store.state.enableConfigFileReload' v-model="$store.state.configFileReloadInterval"></th>
           </tr>
           -->
-        </tbody>
         </tbody>
       </table>
     </div>
