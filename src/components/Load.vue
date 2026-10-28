@@ -19,7 +19,7 @@
     </div>
     <div v-else-if='async'>
       <div class="alert alert-info text-center" v-if='showAsyncRefreshButton'>
-        <button class="btn btn-sm btn-secondary" @click='getProposals()'>⟳ Refresh View Now (Task-Id: {{ taskId }} )</button>
+        <button class="btn btn-sm btn-secondary" @click='getLoad()'>⟳ Refresh View Now (Task-Id: {{ taskId }} )</button>
       </div>
       <async-task :asyncData='asyncData'></async-task>
     </div>
@@ -53,6 +53,7 @@ export default {
       errorData: null,
       async: false,
       asyncData: null,
+      showAsyncRefreshButton: false,
       // params
       allow_capacity_estimation: true,
       // broker load & host load
@@ -158,7 +159,7 @@ export default {
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s
 }
-.fade-enter, .fade-leave-to  {
+.fade-enter-from, .fade-leave-to  {
   opacity: 0
 }
 </style>

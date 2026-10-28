@@ -40,7 +40,7 @@
             <td>{{ numReplicaMovements }}</td>
             <td>{{ numLeaderMovements }}</td>
             <td>{{ recentWindows }}</td>
-            <td>{{ dataToMoveMB | formatUnits }}</td>
+            <td>{{ $formatters.formatUnits(dataToMoveMB) }}</td>
             <td>{{ monitoredPartitionsPercentage ? monitoredPartitionsPercentage.toFixed(2) : null }}%</td>
           </tr>
         </tbody>
@@ -128,6 +128,7 @@ export default {
       loading: false,
       loadingSecondsNow: 0,
       loaded: false,
+      stopRefresh: false,
       error: false,
       errorData: null,
       async: false,
@@ -150,6 +151,9 @@ export default {
   },
   created () {
     this.getProposals()
+  },
+  beforeUnmount () {
+    this.stopRefresh = true
   },
   watch: {
     group: function (ogroup, ngroup) {
@@ -307,7 +311,9 @@ export default {
       this.getProposals()
     },
     getProposals () {
+      if (this.stopRefresh) return
       let vm = this
+      const url = vm.url
       vm.error = false
       vm.async = false
       vm.loading = true
@@ -316,13 +322,13 @@ export default {
       }
       // check if there is a running user-task-id for this end point in the $store
       // let task = this.$store.getters.getTaskId('proposals')
-      let task = this.task
-      if (this.task) {
+      let task = this.taskId
+      if (task) {
         params['headers'] = {
           'User-Task-ID': task
         }
       }
-      vm.$http.get(this.url, params).then((r) => {
+      vm.$http.get(url, params).then((r) => {
         vm.loading = false
         // set this so that we know if the server sends user-task-id in the response
         vm.detectedUserTaskId = r.headers.hasOwnProperty('user-task-id')
@@ -336,12 +342,15 @@ export default {
         } else if (r.headers['content-type'].match(/text\/plain/) || r.data.progress) {
           // save the task-id if its present in the response header
           let task = r.headers.hasOwnProperty('user-task-id') ? r.headers['user-task-id'] : null
-          vm.$store.commit('setTaskId', {url: vm.url, taskid: task}) // save this task for follow-up calls (null deletes in vuex)
+          vm.$store.commit('setTaskId', {url, taskid: task}) // save this task for follow-up calls (null deletes in vuex)
           // set the internal bits
           vm.async = true
           vm.asyncData = r.data
           vm.showAsyncRefreshButton = true
         } else {
+          if (task && vm.$store.getters.getTaskId(url) === task) {
+            vm.$store.commit('setTaskId', {url, taskid: null})
+          }
           vm.async = false
           vm.loading = false
           vm.error = false
@@ -352,18 +361,28 @@ export default {
           vm.monitoredPartitionsPercentage = r.data.summary.monitoredPartitionsPercentage
           vm.numLeaderMovements = r.data.summary.numLeaderMovements
           // nested maps
-          vm.$set(vm, 'loadBefore', r.data.loadBeforeOptimization)
-          vm.$set(vm, 'loadAfter', r.data.loadAfterOptimization)
+          vm.loadBefore = r.data.loadBeforeOptimization
+          vm.loadAfter = r.data.loadAfterOptimization
           // key has been renamed upstream
           if (r.data.hasOwnProperty('goalSummary')) {
-            vm.$set(vm, 'goals', r.data.goalSummary)
+            vm.goals = r.data.goalSummary
           } else {
-            vm.$set(vm, 'goals', r.data.goals)
+            vm.goals = r.data.goals
           }
           vm.errorData = null
           vm.loaded = true
         }
       }, (e) => {
+        const message = e.response?.data?.errorMessage
+        if (task && e.response?.status === 400
+          && typeof message === 'string' && message.startsWith('Unexpected header ')
+          && message.includes('User-Task-ID') && vm.$store.getters.getTaskId(url) === task) {
+          vm.$store.commit('setTaskId', {url, taskid: null})
+          if (vm.url === url) {
+            vm.getProposals()
+            return
+          }
+        }
         vm.error = true
         vm.loading = false
         vm.goals = []

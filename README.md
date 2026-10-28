@@ -34,6 +34,44 @@ Documentation
 
 Application Screnshots & How-to Guides are available in the [wiki](https://github.com/linkedin/cruise-control-ui/wiki).
 
+Development
+===========
+
+Use Node.js 24 LTS (see `.nvmrc`) and npm 11 or later. CI also checks Node.js 26.
+
+```bash
+npm ci --no-audit --no-fund
+npm test
+npm run lint
+npm run build
+```
+
+The production output remains `dist/`, including `dist/static/config.csv`.
+Configure that CSV with the existing Cruise Control API prefix (for example,
+`/kafkacruisecontrol`). The compatibility tests cover API URL construction and
+both nested and legacy asynchronous progress responses.
+
+The application uses Vue 3, Vue Router 4, Vuex 4, and Chart.js 4 with
+vue-chartjs 5. The Options API, Bootstrap 4 styling, hash-based routes, and
+Cruise Control API contracts are retained. Internet Explorer is not supported.
+
+Run `npm run dev` to start Vite on port 8090 (`PORT` overrides the port).
+Requests to `/kafkacruisecontrol` are proxied to `http://localhost:9090`.
+Production assets use relative URLs so the built UI can also be hosted under
+a subdirectory.
+
+Browser regression tests run against the production build, served under `/ui/`,
+with mocked Cruise Control responses. They cover deep links, cluster switching,
+asynchronous task refresh, dry-run defaults, and real chart rendering and updates:
+
+```bash
+npx playwright install chromium
+npm run build
+npm run test:e2e
+```
+
+These tests do not replace acceptance testing against your Cruise Control deployment.
+
 License
 =======
 

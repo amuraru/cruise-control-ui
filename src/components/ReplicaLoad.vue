@@ -37,32 +37,32 @@
         </tr>
       </thead>
       <tbody>
-        <template v-for="rack in racks">
-          <template v-for="host in rack.hosts">
-            <template v-for="broker in host.brokers" v-if='broker.replicas.length > 0'>
-              <template v-for="replica in broker.replicas">
+        <template v-for="rack in racks" :key="rack.rackid">
+          <template v-for="host in rack.hosts" :key="host.name">
+            <template v-for="broker in host.brokers" :key="broker.brokerid">
+              <template v-if='broker.replicas.length > 0'>
+              <template v-for="replica in broker.replicas" :key="replica.topic + '-' + replica.partition">
                 <tr>
                   <td>{{ rack.rackid }}</td>
-                  <td>{{ host.name | formatHost }}</td>
+                  <td>{{ $formatters.formatHost(host.name) }}</td>
                   <td>{{ broker.brokerid }}</td>
                   <td>{{ replica.topic + '-' + replica.partition }}</td>
                   <td>{{ replica.isLeader }}</td>
                   <template v-if='replica.load && replica.load.snapshots'>
-                  <td>{{ replica.load.snapshots[0].disk | formatUnits }}</td>
+                  <td>{{ $formatters.formatUnits(replica.load.snapshots[0].disk) }}</td>
                   <td>{{ replica.load.snapshots[0].cpu.toFixed(0) }}</td>
-                  <td>{{ replica.load.snapshots[0].networkOutbound | formatNetworkUnits }}</td>
-                  <td>{{ replica.load.snapshots[0].networkInbound | formatNetworkUnits }}</td>
+                  <td>{{ $formatters.formatNetworkUnits(replica.load.snapshots[0].networkOutbound) }}</td>
+                  <td>{{ $formatters.formatNetworkUnits(replica.load.snapshots[0].networkInbound) }}</td>
                   </template>
                   <template v-else>
                   <td colspan=6 class='alert alert-warning text-center'>No Load data available.</td>
                   </template>
                 </tr>
               </template>
-            </template>
-            <template v-for="broker in host.brokers" v-else>
-              <tr>
+              </template>
+              <tr v-else>
                 <td>{{ rack.rackid }}</td>
-                <td>{{ host.name | formatHost }}</td>
+                <td>{{ $formatters.formatHost(host.name) }}</td>
                 <td>{{ broker.brokerid }}</td>
                 <td colspan=6 class='alert alert-warning text-center'>No replica details available.</td>
               </tr>
@@ -95,10 +95,10 @@ export default {
     }
   },
   watch: {
-    group: (ngroup) => {
+    group () {
       this.argsChanged()
     },
-    cluster: (ncluster) => {
+    cluster () {
       this.argsChanged()
     }
   },

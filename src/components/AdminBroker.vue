@@ -145,7 +145,6 @@
         </div>
       </div>
 
-
       <!-- Rebalance Cluster Flags -->
       <div class="alert alert-info" v-if='actionName === "rebalance"'>
         <h5>Rebalance Cluster Flags</h5>
@@ -169,12 +168,12 @@
           <div class="row">
             <div class="col-md-4">
               <h6>Choose Goals</h6>
-              <div class="form-check" v-for='g in allGoals.goals' v-if='!g.skip'>
+              <div class="form-check" v-for='g in allGoals.goals.filter(goal => !goal.skip)' :key='g.goal'>
                 <template v-if='g.group == 1'>
                   <input class="form-check-input" type="checkbox" :value="g.goal" v-model='goals1' :disabled='disable_goals1'>
                   <label class="form-check-label" :title='g.description'>
-                    <b v-if='g.hardGoal'>{{ g.goal.replace(/Goal/, '') | splitCamelCase }}</b>
-                    <template v-else>{{ g.goal.replace(/Goal/, '') | splitCamelCase }}</template>
+                    <b v-if='g.hardGoal'>{{ $formatters.splitCamelCase(g.goal.replace(/Goal/, '')) }}</b>
+                    <template v-else>{{ $formatters.splitCamelCase(g.goal.replace(/Goal/, '')) }}</template>
                   </label>
                 </template>
               </div>
@@ -314,12 +313,12 @@
           <div class="row">
             <div class="col-md-4">
               <h6>Choose Goals</h6>
-              <div class="form-check" v-for='g in allGoals.goals' v-if='!g.skip'>
+              <div class="form-check" v-for='g in allGoals.goals.filter(goal => !goal.skip)' :key='g.goal'>
                 <template v-if='g.group == 1'>
                   <input class="form-check-input" type="checkbox" :value="g.goal" v-model='goals1' :disabled='disable_goals1'>
                   <label class="form-check-label" :title='g.description'>
-                    <b v-if='g.hardGoal'>{{ g.goal.replace(/Goal/, '') | splitCamelCase }}</b>
-                    <template v-else>{{ g.goal.replace(/Goal/, '') | splitCamelCase }}</template>
+                    <b v-if='g.hardGoal'>{{ $formatters.splitCamelCase(g.goal.replace(/Goal/, '')) }}</b>
+                    <template v-else>{{ $formatters.splitCamelCase(g.goal.replace(/Goal/, '')) }}</template>
                   </label>
                 </template>
               </div>
@@ -436,12 +435,12 @@
           <div class="row">
             <div class="col-md-4">
               <h6>Choose Goals</h6>
-              <div class="form-check" v-for='g in allGoals.goals' v-if='!g.skip'>
+              <div class="form-check" v-for='g in allGoals.goals.filter(goal => !goal.skip)' :key='g.goal'>
                 <template v-if='g.group == 1'>
                   <input class="form-check-input" type="checkbox" :value="g.goal" v-model='goals1' :disabled='disable_goals1'>
                   <label class="form-check-label" :title='g.description'>
-                    <b v-if='g.hardGoal'>{{ g.goal.replace(/Goal/, '') | splitCamelCase }}</b>
-                    <template v-else>{{ g.goal.replace(/Goal/, '') | splitCamelCase }}</template>
+                    <b v-if='g.hardGoal'>{{ $formatters.splitCamelCase(g.goal.replace(/Goal/, '')) }}</b>
+                    <template v-else>{{ $formatters.splitCamelCase(g.goal.replace(/Goal/, '')) }}</template>
                   </label>
                 </template>
               </div>

@@ -27,14 +27,24 @@ This project uses the following libraries.
 
 **UI Framework:**
 
-- [vue 2.x](https://www.npmjs.com/package/vue)
-- [vue-axios](https://www.npmjs.com/package/vue-axios)
-- [vue-router](https://www.npmjs.com/package/vue-router)
-- [vuex](https://www.npmjs.com/package/vuex)
+- [vue 3](https://www.npmjs.com/package/vue)
+- [vue-router 4](https://www.npmjs.com/package/vue-router)
+- [vuex 4](https://www.npmjs.com/package/vuex)
+
+**Charts:**
+
+- [chart.js 4](https://www.npmjs.com/package/chart.js)
+- [vue-chartjs 5](https://www.npmjs.com/package/vue-chartjs)
 
 **Build System:**
 
-- [webpack](https://www.npmjs.com/package/webpack)
+- [vite](https://www.npmjs.com/package/vite)
+
+**Testing:**
+
+- [vitest](https://www.npmjs.com/package/vitest)
+- [Vue Test Utils](https://www.npmjs.com/package/@vue/test-utils)
+- [Playwright](https://www.npmjs.com/package/@playwright/test)
 
 Optimizations
 ------------

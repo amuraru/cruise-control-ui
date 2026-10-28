@@ -1,11 +1,8 @@
 // Copyright 2017-2019 LinkedIn Corp. Licensed under the BSD 2-Clause License (the "License"). See License in the project root for license information.
 
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore } from 'vuex'
 
-Vue.use(Vuex)
-
-export default new Vuex.Store({
+export default createStore({
   state: {
     chartColors: ['#ffffd9', '#edf8b1', '#c7e9b4', '#7fcdbb', '#41b6c4', '#1d91c0', '#225ea8', '#253494', '#081d58'],
     configurl: './static/config.csv', // path to the cruise-control REST end-points
@@ -75,10 +72,10 @@ export default new Vuex.Store({
     setTaskId: function (state, params) {
       if (params.taskid) {
         // set if the taskid is valid
-        Vue.set(state.userTasks, params.url, params.taskid)
+        state.userTasks[params.url] = params.taskid
       } else {
         // delete if the taskid is invalid
-        Vue.delete(state.userTasks, params.url)
+        delete state.userTasks[params.url]
       }
     }
   }

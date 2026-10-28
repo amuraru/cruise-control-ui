@@ -35,7 +35,7 @@
             <td>{{ t.UserTaskId }}</td>
             <td>{{ t.ClientIdentity }}</td>
             <td>{{ (new Date(parseInt(t.StartMs, 10))).toString().substr(0, 34) }}</td>
-            <td>{{ t.StartMs | formatLocalTime }}</td>
+            <td>{{ $formatters.formatLocalTime(t.StartMs) }}</td>
             <td>
               <span v-if='t.Status === "Completed"' class="badge badge-success">{{ t.Status }}</span>
               <span v-else class="badge badge-info">{{ t.Status }}</span>
@@ -51,7 +51,7 @@
 
 <script>
 import BooleanEL from '@/components/BooleanEL'
-const sortBy = require('lodash.sortby')
+import sortBy from 'lodash.sortby'
 
 export default {
   name: 'UserTasks',

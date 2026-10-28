@@ -200,7 +200,6 @@ export default {
 
   mounted () {
     this.fetchKccData()
-    this.moptions = this.getOptions('test')
   },
 
   methods: {
@@ -258,23 +257,23 @@ export default {
     },
     getOptions (title) {
       let options = {
-        legend: {
-          display: false
+        plugins: {
+          legend: {
+            display: false
+          },
+          title: {
+            display: true,
+            text: title
+          }
         },
         scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            },
-            scaleLabel: {
-              labelString: this.resource === 'cpu' ? '% cpu' : `nb ${this.resource}`,
+          y: {
+            beginAtZero: true,
+            title: {
+              text: this.resource === 'cpu' ? '% cpu' : `nb ${this.resource}`,
               display: true
             }
-          }]
-        },
-        title: {
-          display: true,
-          text: title
+          }
         }
       }
       return options
@@ -316,12 +315,11 @@ export default {
 
     getStackedOptions () {
       let options = this.getOptions(`stacked ${this.resource} view`)
-      options.scales.xAxes = [{ stacked: true }]
-      options.scales.yAxes[0].stacked = true
-      options.scales.yAxes[0].scaleLabel.labelString = this.resource === 'cpu' ? '% cpu' : `nb ${this.resource}`
+      options.scales.x = { stacked: true }
+      options.scales.y.stacked = true
       options.maintainAspectRatio = false
       options.responsive = true
-      options.legend = {
+      options.plugins.legend = {
         display: true,
         position: 'bottom'
       }

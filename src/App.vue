@@ -3,9 +3,11 @@
   <div id="app">
     <app-nav></app-nav>
     <div class="container-fluid" id="page">
-      <transition mode="out-in">
-        <router-view></router-view>
-      </transition>
+      <router-view v-slot="{ Component }">
+        <transition mode="out-in">
+          <component :is="Component"></component>
+        </transition>
+      </router-view>
     </div>
     <hr>
     <p class="text-center">&copy; 2017-2019 <a href="https://linkedin.com">LinkedIn</a>.</p>

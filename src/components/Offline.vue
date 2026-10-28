@@ -24,7 +24,7 @@ export default {
     window.addEventListener('online', vm.setOnline)
     window.addEventListener('offline', vm.setOffline)
   },
-  beforeDestroy () {
+  beforeUnmount () {
     let vm = this
     window.removeEventListener('online', vm.setOnline)
     window.removeEventListener('offline', vm.setOffline)

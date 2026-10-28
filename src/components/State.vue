@@ -25,7 +25,6 @@
   </div>
 </template>
 
-
 <script>
 import Monitor from '@/components/Monitor'
 import Analyzer from '@/components/Analyzer'

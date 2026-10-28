@@ -19,7 +19,7 @@
       <p>Loading ...</p>
     </div>
     <div v-else>
-      <div class class="card-deck mb-3">
+      <div class="card-deck mb-3">
         <div class='card text-center'>
           <div class='card-header'>Analyzer</div>
           <div class='card-body'>
@@ -126,7 +126,7 @@ export default {
           vm.error = false
           vm.errorData = null
           vm.loading = false
-          vm.$set(vm, 'AnalyzerState', r.data.AnalyzerState)
+          vm.AnalyzerState = r.data.AnalyzerState
           vm.loading = false
           vm.loaded = true
         }
@@ -147,7 +147,7 @@ export default {
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s
 }
-.fade-enter, .fade-leave-to  {
+.fade-enter-from, .fade-leave-to  {
   opacity: 0
 }
 </style>

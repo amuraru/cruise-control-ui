@@ -42,7 +42,7 @@
             <td><span :class='statusLabel(r.Status)'>{{ r.Status }}</span></td>
             <td>{{ r.Reason }}</td>
             <td>
-              <!-- {{ reconstructURL(r.EndpointWithParams, r.Id) }} --> 
+              <!-- {{ reconstructURL(r.EndpointWithParams, r.Id) }} -->
               {{ r.EndpointWithParams }}</td>
             <td>
               <template v-if='r.Status.match(/PENDING_REVIEW/)'>
