@@ -1,5 +1,7 @@
 FROM node:26 AS base
 
+RUN npm install --global npm@12.2.1 --no-audit --no-fund
+
 WORKDIR /opt/cruise-control-ui
 COPY package*.json ./
 RUN npm ci

@@ -37,9 +37,10 @@ Application Screnshots & How-to Guides are available in the [wiki](https://githu
 Development
 ===========
 
-Use Node.js 26 (see `.nvmrc`) and npm 11 or later. CI uses the same Node.js version.
+Use Node.js 26 (see `.nvmrc`) and npm 12.2.1 or later. CI and Docker use npm 12.2.1.
 
 ```bash
+npm install --global npm@12.2.1 --no-audit --no-fund
 npm ci --no-audit --no-fund
 npm test
 npm run lint
