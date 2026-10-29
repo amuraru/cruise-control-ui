@@ -2,6 +2,7 @@ FROM node:26 AS base
 
 WORKDIR /opt/cruise-control-ui
 COPY package*.json ./
+RUN npm install --global "npm@$(node -p 'require("./package.json").engines.npm')" --no-audit --no-fund
 RUN npm ci
 COPY . .
 RUN npm run build

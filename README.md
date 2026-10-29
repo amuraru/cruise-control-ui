@@ -37,9 +37,11 @@ Application Screnshots & How-to Guides are available in the [wiki](https://githu
 Development
 ===========
 
-Use Node.js 26 (see `.nvmrc`) and npm 11 or later. CI uses the same Node.js version.
+Use Node.js 26 (see `.nvmrc`) and the npm version pinned in `package.json` under
+`engines.npm`. Renovate tracks this version; CI and Docker read the same pin.
 
 ```bash
+npm install --global "npm@$(node -p 'require("./package.json").engines.npm')" --no-audit --no-fund
 npm ci --no-audit --no-fund
 npm test
 npm run lint
