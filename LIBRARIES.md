@@ -13,8 +13,9 @@ This project uses the following libraries.
 
 **Look & Feel:**
 
-- [bootstrap 4](https://www.npmjs.com/package/bootstrap)
-- [bootswatch 4 themes](https://www.npmjs.com/package/bootswatch)
+- [bootstrap 5](https://www.npmjs.com/package/bootstrap)
+- [bootswatch 5 themes](https://www.npmjs.com/package/bootswatch)
+- [Popper 2](https://www.npmjs.com/package/@popperjs/core)
 
 **URL Management:**
 
@@ -28,7 +29,7 @@ This project uses the following libraries.
 **UI Framework:**
 
 - [vue 3](https://www.npmjs.com/package/vue)
-- [vue-router 4](https://www.npmjs.com/package/vue-router)
+- [vue-router 5](https://www.npmjs.com/package/vue-router)
 - [vuex 4](https://www.npmjs.com/package/vuex)
 
 **Charts:**

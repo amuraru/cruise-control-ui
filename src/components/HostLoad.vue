@@ -12,7 +12,7 @@
       Loading ...
     </div>
     <table class="table table-sm table-bordered" v-else-if='sortedHosts && sortedHosts.length > 0'>
-      <thead class="thead-light">
+      <thead class="table-light">
         <tr>
           <th colspan=1 class='text-center'>Broker</th>
           <th colspan=2 class='text-center'>Topic/Partition</th>

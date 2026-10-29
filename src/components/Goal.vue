@@ -2,7 +2,7 @@
 <template>
   <div>
   <table class="table table-sm table-bordered table-fixed">
-    <thead class='thead-light'>
+    <thead class='table-light'>
       <tr>
         <th>Brokers</th>
         <th>Replicas</th>
@@ -18,7 +18,7 @@
     </tbody>
   </table>
   <table class="table table-sm table-fixed">
-    <thead class='thead-light'>
+    <thead class='table-light'>
       <tr>
         <th></th>
         <th>Disk</th>

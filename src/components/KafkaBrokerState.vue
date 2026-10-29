@@ -3,7 +3,7 @@
   <div>
     <h4>Kafka Broker State</h4>
     <table class="table table-sm table-bordered">
-      <thead class="thead-light">
+      <thead class="table-light">
         <tr>
           <th>Broker</th>
           <th>#Replicas </th>

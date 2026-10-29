@@ -5,7 +5,7 @@
       <b>URL ({{group}}, {{cluster}}):</b> <a target=_blank :href='url'>{{ url }}</a>
     </div>
     <div v-if='!loading'>
-      <div class="alert alert-primary text-right">
+      <div class="alert alert-primary text-end">
         <button class="btn btn-primary" @click='getState()'>Refresh Executor State</button>
       </div>
     </div>
@@ -24,7 +24,7 @@
           <div class="card-header">Executor</div>
           <div class="card-body">
             <p class="card-text">
-            <span :class="['badge', ExecutorState.state && ExecutorState.state.match(/STOPPED|ERROR/) ? 'badge-danger': 'badge-success']">{{ ExecutorState.state }}</span>
+            <span :class="['badge', ExecutorState.state && ExecutorState.state.match(/STOPPED|ERROR/) ? 'text-bg-danger': 'text-bg-success']">{{ ExecutorState.state }}</span>
             </p>
           </div>
         </div>
@@ -152,7 +152,7 @@
           <div class="card-deck mb-3">
             <h4>Completed Movements</h4>
             <table class="table table-sm table-bordered">
-              <thead class="thead-light">
+              <thead class="table-light">
                 <tr>
                   <th>Topic</th>
                   <th>Partition</th>
@@ -175,7 +175,7 @@
           <div class="card-deck mb-3">
             <h4>Pending Movements</h4>
             <table class="table table-sm table-bordered">
-              <thead class="thead-light">
+              <thead class="table-light">
                 <tr>
                   <th>Topic</th>
                   <th>Partition</th>
@@ -198,7 +198,7 @@
           <div class="card-deck mb-3">
             <h4>In Progress Movements</h4>
             <table class="table table-sm table-bordered">
-              <thead class="thead-light">
+              <thead class="table-light">
                 <tr>
                   <th>Topic</th>
                   <th>Partition</th>
@@ -221,7 +221,7 @@
           <div class="card-deck mb-3">
             <h4>Aborting Movements</h4>
             <table class="table table-sm table-bordered">
-              <thead class="thead-light">
+              <thead class="table-light">
                 <tr>
                   <th>Topic</th>
                   <th>Partition</th>
@@ -244,7 +244,7 @@
           <div class="card-deck mb-3">
             <h4>Aborted Movements</h4>
             <table class="table table-sm table-bordered">
-              <thead class="thead-light">
+              <thead class="table-light">
                 <tr>
                   <th>Topic</th>
                   <th>Partition</th>
@@ -267,7 +267,7 @@
           <div class="card-deck mb-3">
             <h4>Dead partition Movements</h4>
             <table class="table table-sm table-bordered">
-              <thead class="thead-light">
+              <thead class="table-light">
                 <tr>
                   <th>Topic</th>
                   <th>Partition</th>

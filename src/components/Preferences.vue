@@ -5,6 +5,15 @@
     <div class="card-body">
       <table class="table table-bordered">
         <tbody>
+          <tr><th colspan=2 class='text-center'>Appearance</th></tr>
+          <tr>
+            <td><label for="theme">Theme</label></td>
+            <td>
+              <select id="theme" class="form-select" v-model="theme">
+                <option v-for="option in themes" :key="option.value" :value="option.value">{{ option.label }}</option>
+              </select>
+            </td>
+          </tr>
           <!--
           <tr><th colspan=2 class='text-center'>Auto Refresh UI Data</th></tr>
           <tr>
@@ -49,11 +58,24 @@
 </template>
 
 <script>
+import { currentTheme, setTheme, themes } from '../themes'
+
 export default {
   name: 'Preferences',
   data () {
     return {
-      store: this.$store
+      store: this.$store,
+      themes
+    }
+  },
+  computed: {
+    theme: {
+      get () {
+        return currentTheme.value
+      },
+      set (value) {
+        setTheme(value)
+      }
     }
   }
 }

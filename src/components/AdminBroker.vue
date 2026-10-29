@@ -2,7 +2,7 @@
 <template>
   <div>
     <div v-if='!loading'>
-      <div class="alert alert-primary text-right">
+      <div class="alert alert-primary text-end">
         <button class="btn btn-primary" @click='getKafkaState()'>Refresh Broker Details</button>
       </div>
     </div>
@@ -23,7 +23,7 @@
     </div>
     <div v-else-if='loaded'>
       <table class="table table-sm table-bordered">
-        <thead class="thead-light">
+        <thead class="table-light">
           <tr>
             <th>Broker</th>
             <th>#Replicas </th>
@@ -91,7 +91,7 @@
           <input class="form-check-input" type="radio" value="remove_disks" v-model='actionName' :disabled='selectedBrokers.length != 0'>
           <label class="form-check-label">Remove Disks</label>
         </div>
-        <div class="form-check form-check-inline float-right" v-if='actionName'>
+        <div class="form-check form-check-inline float-end" v-if='actionName'>
           <input class="form-check-input" type="checkbox" v-model='showURL'>
           <label class="form-check-label">Show URL</label>
         </div>
@@ -111,9 +111,9 @@
         <hr>
         <div class="row">
           <div class="col-md-4">
-            <div class="form-inline">
+            <div class="d-flex flex-wrap align-items-center gap-2">
               <label class="form-label"> Concurrent Leader Movements </label>
-              <input type="number" class="form-input" v-model='concurrent_leader_movements' placeholder='(CC Default)'>
+              <input type="number" class="form-control" v-model='concurrent_leader_movements' placeholder='(CC Default)'>
             </div>
           </div>
           <div class="col-md-4">
@@ -123,7 +123,7 @@
             </div>
           </div>
         </div>
-        <div class="text-right">
+        <div class="text-end">
           <button @click='actionBroker' class="btn btn-primary">Run PLE</button>
         </div>
       </div>
@@ -140,7 +140,7 @@
             </div>
           </div>
         </div>
-        <div class="text-right">
+        <div class="text-end">
           <button @click='actionBroker' class="btn btn-primary">Run Broker Disk Rebalance</button>
         </div>
       </div>
@@ -179,7 +179,7 @@
               </div>
             </div>
             <div class="col-md-4">
-              <div class="form-group">
+              <div class="mb-3">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" v-model='disallow_capacity_estimation'>
                   <label class="form-check-label">
@@ -187,7 +187,7 @@
                   </label>
                 </div>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" v-model='skip_hard_goal_check' :disabled='disable_skip_hard_goal_check'>
                   <label class="form-check-label">
@@ -195,7 +195,7 @@
                   </label>
                 </div>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" v-model='use_ready_default_goals' :disabled='disable_use_ready_default_goals'>
                   <label class="form-check-label">
@@ -203,7 +203,7 @@
                   </label>
                 </div>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" v-model='kafka_assigner' :disabled='disable_kafka_assigner'>
                   <label class="form-check-label">
@@ -211,7 +211,7 @@
                   </label>
                 </div>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" v-model='dryrun'>
                   <label class="form-check-label">
@@ -222,29 +222,29 @@
             </div>
 
             <div class="col-md-4">
-              <div class="form-row">
+              <div class="row gx-2">
                 <label class="col-sm-6">Use Data From:</label>
                 <div class="col-sm-6">
-                  <select v-model=data_from class="form-control">
+                  <select v-model=data_from class="form-select">
                     <option value=''>(CC Default)</option>
                     <option value='valid_windows'>Valid Windows</option>
                     <option value='valid_partitions'>Valid Partitions</option>
                   </select>
                 </div>
               </div>
-              <div class="form-row">
+              <div class="row gx-2">
                 <label class="col-sm-6">Excluded Topics <b title="Excluded Topics takes  Regular Expression">❓</b></label>
                 <div class="col-sm-6">
                   <input type='text' v-model='excluded_topics' class="form-control" placeholder='(CC Default)'>
                 </div>
               </div>
-              <div class="form-row">
+              <div class="row gx-2">
                 <label class="col-sm-6">Concurrent Partition Movements Per Broker:</label>
                 <div class="col-sm-6">
                   <input class="form-control" type='number' min=0 v-model='concurrent_partition_movements_per_broker' placeholder='(CC Default)'>
                 </div>
               </div>
-              <div class="form-row">
+              <div class="row gx-2">
                 <label class="col-sm-6">Concurrent Leader Movements:</label>
                 <div class="col-sm-6">
                   <input class="form-control" type='number' min=0 v-model='concurrent_leader_movements' placeholder='(CC Default)'>
@@ -253,7 +253,7 @@
             </div>
           </div>
           </template>
-          <div class="text-right">
+          <div class="text-end">
             <button @click.prevent='actionBroker' class="btn btn-primary" v-if='!showAdvanced'>Execute Rebalance With Default Options</button>
             <button @click.prevent='actionBroker' class="btn btn-primary" v-else>Execute Rebalance</button>
           </div>
@@ -266,9 +266,9 @@
         <hr>
         <div class="row">
           <div class="col-md-4">
-            <div class="form-inline">
+            <div class="d-flex flex-wrap align-items-center gap-2">
               <label class="form-label"> Concurrent Leader Movements </label>
-              <input type="number" class="form-input" v-model='concurrent_leader_movements' placeholder='(CC Default)'>
+              <input type="number" class="form-control" v-model='concurrent_leader_movements' placeholder='(CC Default)'>
             </div>
           </div>
           <div class="col-md-3">
@@ -324,7 +324,7 @@
               </div>
             </div>
             <div class="col-md-4">
-              <div class="form-group">
+              <div class="mb-3">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" v-model='disallow_capacity_estimation'>
                   <label class="form-check-label">
@@ -332,7 +332,7 @@
                   </label>
                 </div>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" v-model='skip_hard_goal_check' :disabled='disable_skip_hard_goal_check'>
                   <label class="form-check-label">
@@ -340,7 +340,7 @@
                   </label>
                 </div>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" v-model='use_ready_default_goals' :disabled='disable_use_ready_default_goals'>
                   <label class="form-check-label">
@@ -348,7 +348,7 @@
                   </label>
                 </div>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" v-model='kafka_assigner' :disabled='disable_kafka_assigner'>
                   <label class="form-check-label">
@@ -356,7 +356,7 @@
                   </label>
                 </div>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" v-model='throttle_removed_broker'>
                   <label class="form-check-label">
@@ -364,7 +364,7 @@
                   </label>
                 </div>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" v-model='dryrun'>
                   <label class="form-check-label">
@@ -375,29 +375,29 @@
             </div>
 
             <div class="col-md-4">
-              <div class="form-row">
+              <div class="row gx-2">
                 <label class="col-sm-6">Use Data From:</label>
                 <div class="col-sm-6">
-                  <select v-model=data_from class="form-control">
+                  <select v-model=data_from class="form-select">
                     <option value=''>(CC Default)</option>
                     <option value='valid_windows'>Valid Windows</option>
                     <option value='valid_partitions'>Valid Partitions</option>
                   </select>
                 </div>
               </div>
-              <div class="form-row">
+              <div class="row gx-2">
                 <label class="col-sm-6">Excluded Topics <b title="Excluded Topics takes  Regular Expression">❓</b></label>
                 <div class="col-sm-6">
                   <input type='text' v-model='excluded_topics' class="form-control" placeholder='(CC Default)'>
                 </div>
               </div>
-              <div class="form-row">
+              <div class="row gx-2">
                 <label class="col-sm-6">Concurrent Partition Movements Per Broker:</label>
                 <div class="col-sm-6">
                   <input class="form-control" type='number' min=0 v-model='concurrent_partition_movements_per_broker' placeholder='(CC Default)'>
                 </div>
               </div>
-              <div class="form-row">
+              <div class="row gx-2">
                 <label class="col-sm-6">Concurrent Leader Movements:</label>
                 <div class="col-sm-6">
                   <input class="form-control" type='number' min=0 v-model='concurrent_leader_movements' placeholder='(CC Default)'>
@@ -406,7 +406,7 @@
             </div>
           </div>
           </template>
-          <div class="text-right">
+          <div class="text-end">
             <button @click.prevent='actionBroker' class="btn btn-primary" v-if='!showAdvanced'>Remove Brokers {{ selectedBrokers }} With Default Options</button>
             <button @click.prevent='actionBroker' class="btn btn-primary" v-else>Remove Brokers {{ selectedBrokers }}</button>
           </div>
@@ -446,7 +446,7 @@
               </div>
             </div>
             <div class="col-md-4">
-              <div class="form-group">
+              <div class="mb-3">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" v-model='disallow_capacity_estimation'>
                   <label class="form-check-label">
@@ -454,7 +454,7 @@
                   </label>
                 </div>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" v-model='skip_hard_goal_check' :disabled='disable_skip_hard_goal_check'>
                   <label class="form-check-label">
@@ -462,7 +462,7 @@
                   </label>
                 </div>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" v-model='use_ready_default_goals' :disabled='disable_use_ready_default_goals'>
                   <label class="form-check-label">
@@ -470,7 +470,7 @@
                   </label>
                 </div>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" v-model='kafka_assigner' :disabled='disable_kafka_assigner'>
                   <label class="form-check-label">
@@ -478,7 +478,7 @@
                   </label>
                 </div>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" v-model='throttle_added_broker'>
                   <label class="form-check-label">
@@ -486,7 +486,7 @@
                   </label>
                 </div>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" v-model='dryrun'>
                   <label class="form-check-label">
@@ -496,29 +496,29 @@
               </div>
             </div>
             <div class="col-md-4">
-              <div class="form-row">
+              <div class="row gx-2">
                 <label class="col-sm-6">Use Data From:</label>
                 <div class="col-sm-6">
-                  <select v-model=data_from class="form-control">
+                  <select v-model=data_from class="form-select">
                     <option value=''>(CC Default)</option>
                     <option value='valid_windows'>Valid Windows</option>
                     <option value='valid_partitions'>Valid Partitions</option>
                   </select>
                 </div>
               </div>
-              <div class="form-row">
+              <div class="row gx-2">
                 <label class="col-sm-6">Excluded Topics <b title="Excluded Topics takes  Regular Expression">❓</b></label>
                 <div class="col-sm-6">
                   <input type='text' v-model='excluded_topics' class="form-control" placeholder='(CC Default)'>
                 </div>
               </div>
-              <div class="form-row">
+              <div class="row gx-2">
                 <label class="col-sm-6">Concurrent Partition Movements Per Broker:</label>
                 <div class="col-sm-6">
                   <input class="form-control" type='number' min=0 v-model='concurrent_partition_movements_per_broker' placeholder='(CC Default)'>
                 </div>
               </div>
-              <div class="form-row">
+              <div class="row gx-2">
                 <label class="col-sm-6">Concurrent Leader Movements:</label>
                 <div class="col-sm-6">
                   <input class="form-control" type='number' min=0 v-model='concurrent_leader_movements' placeholder='(CC Default)'>
@@ -527,7 +527,7 @@
             </div>
           </div>
           </template>
-          <div class="text-right">
+          <div class="text-end">
             <button @click.prevent='actionBroker' class="btn btn-primary" v-if='!showAdvanced'>Add Brokers {{ selectedBrokers }} With Default Options</button>
             <button @click.prevent='actionBroker' class="btn btn-primary" v-else>Add Brokers {{ selectedBrokers }}</button>
           </div>
@@ -540,9 +540,9 @@
         <hr>
         <div class="row">
           <div class="col-md-4">
-            <div class="form-inline">
+            <div class="d-flex flex-wrap align-items-center gap-2">
               <label class="form-label"> Disks as broker_id-disk_name separated by comma: </label>
-              <input type="text" class="form-input" v-model='brokerid_and_logdirs' placeholder=''>
+              <input type="text" class="form-control" v-model='brokerid_and_logdirs' placeholder=''>
             </div>
           </div>
           <div class="col-md-4">
@@ -552,7 +552,7 @@
             </div>
           </div>
         </div>
-        <div class="text-right">
+        <div class="text-end">
           <button @click='actionBroker' class="btn btn-primary">Remove Disks</button>
         </div>
       </div>

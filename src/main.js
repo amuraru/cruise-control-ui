@@ -9,8 +9,10 @@ import store from './store'
 import formatters from './formatters'
 import Exception from '@/components/Exception'
 import AsyncTask from '@/components/AsyncTask'
+import { currentTheme, setTheme } from './themes'
 import 'bootstrap/js/dist/dropdown'
-import 'bootswatch/dist/cosmo/bootstrap.css'
+
+setTheme(currentTheme.value)
 
 const app = createApp(App)
 

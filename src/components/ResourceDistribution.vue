@@ -33,22 +33,22 @@
           <div class="dropdown">
             <button
               class="btn btn-outline-primary btn-sm dropdown-toggle"
+              id="resourceDropdown"
               type="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
+              data-bs-toggle="dropdown"
               aria-expanded="false"
             >
               display: {{ resource }}
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" @click.prevent="setResource('leaders')"
-                >Leaders</a
+            <div class="dropdown-menu" aria-labelledby="resourceDropdown">
+              <button type="button" class="dropdown-item" @click="setResource('leaders')"
+                >Leaders</button
               >
-              <a class="dropdown-item" @click.prevent="setResource('replicas')"
-                >Replicas</a
+              <button type="button" class="dropdown-item" @click="setResource('replicas')"
+                >Replicas</button
               >
-              <a class="dropdown-item" @click.prevent="setResource('cpu')"
-                >CPU</a
+              <button type="button" class="dropdown-item" @click="setResource('cpu')"
+                >CPU</button
               >
             </div>
           </div>

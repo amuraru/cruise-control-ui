@@ -14,7 +14,7 @@ export default {
       return this.label === true || (this.label !== false && this.label.match(/^ready/i))
     },
     className () {
-      return this.isTrue ? 'badge badge-success' : 'badge badge-secondary'
+      return this.isTrue ? 'badge text-bg-success' : 'badge text-bg-secondary'
     }
   }
 }

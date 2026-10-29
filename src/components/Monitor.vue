@@ -5,7 +5,7 @@
       <b>URL ({{group}}, {{cluster}}):</b> <a target=_blank :href='url'>{{ url }}</a>
     </div>
     <div v-if='!loading'>
-      <div class="alert alert-primary text-right">
+      <div class="alert alert-primary text-end">
         <button class="btn btn-primary" @click='bootstrapMetrics()'>Bootstrap Metrics</button>
         <button class="btn btn-primary" @click='getState()'>Refresh Monitor SubState</button>
       </div>
@@ -24,7 +24,7 @@
         <div class="card text-center">
           <div class="card-header">Monitor</div>
           <div class="card-body  align-items-center d-flex justify-content-center">
-            <p class="card-text" v-if='MonitorState.state == "LOADING"'><span class="badge badge-info">{{ MonitorState.state }} ({{ MonitorState.loadingProgressPct.toFixed(2) }})</span></p>
+            <p class="card-text" v-if='MonitorState.state == "LOADING"'><span class="badge text-bg-info">{{ MonitorState.state }} ({{ MonitorState.loadingProgressPct.toFixed(2) }})</span></p>
             <p class="card-text" v-else>
               <span :class="monitor_class">{{ MonitorState.state }}</span>
               <a class='pointer' @click.prevent='doAction()' :title='monitor_title'>&#x23ef;</a>
@@ -34,7 +34,7 @@
         <div class="card text-center">
           <div class="card-header">Training</div>
           <div class="card-body  align-items-center d-flex justify-content-center">
-            <span :class="['badge', MonitorState.trained == 'false' ? 'badge-info': 'badge-success']">{{ MonitorState.trained == 'false' ? 'TRAINING' : 'TRAINED' }} ({{MonitorState.trainingPct.toFixed(2) }} %)</span>
+            <span :class="['badge', MonitorState.trained == 'false' ? 'text-bg-info': 'text-bg-success']">{{ MonitorState.trained == 'false' ? 'TRAINING' : 'TRAINED' }} ({{MonitorState.trainingPct.toFixed(2) }} %)</span>
           </div>
         </div>
         <div class="card text-center">
@@ -141,13 +141,13 @@ export default {
     },
     monitor_class () {
       if (this.MonitorState.state === 'PAUSED') {
-        return 'badge badge-secondary'
+        return 'badge text-bg-secondary'
       } else if (this.MonitorState.state === 'RUNNING') {
-        return 'badge badge-success'
+        return 'badge text-bg-success'
       } else if (this.MonitorState.state === 'STOPPED') {
-        return 'badge badge-danger'
+        return 'badge text-bg-danger'
       } else {
-        return 'badge badge-primary'
+        return 'badge text-bg-primary'
       }
     }
   },
