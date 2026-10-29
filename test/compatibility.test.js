@@ -5,6 +5,36 @@ import api from '../src/api'
 import store from '../src/store'
 import AsyncTask from '../src/components/AsyncTask.vue'
 import formatters from '../src/formatters'
+import { fulfillCruiseControl, progress } from './fixtures/cruise-control'
+
+function mockRoute (endpoint, method = 'GET') {
+  return {
+    request: () => ({
+      url: () => `https://example.test/kafkacruisecontrol/${endpoint}`,
+      method: () => method
+    }),
+    fulfill: async response => response
+  }
+}
+
+for (const [endpoint, method, status] of [
+  ['missing_endpoint', 'GET', 200],
+  ['rebalance', 'GET', 200],
+  ['kafka_cluster_state', 'GET', 202]
+]) {
+  test(`mocks reject undocumented ${method} ${endpoint} HTTP ${status} responses`, async () => {
+    for (const data of [{ version: 1, errorMessage: 'Not a success response', stackTrace: '' }, 'Not a success response']) {
+      await assert.rejects(fulfillCruiseControl(mockRoute(endpoint, method), data, { status }), /Undocumented mock response/)
+    }
+  })
+}
+
+test('mock contract validation still accepts documented progress and unknown-endpoint errors', async () => {
+  await assert.doesNotReject(fulfillCruiseControl(mockRoute('load'), progress, { status: 202 }))
+  const error = { version: 1, errorMessage: 'Unrecognized endpoint.', stackTrace: '' }
+  await assert.doesNotReject(fulfillCruiseControl(mockRoute('missing_endpoint'), error, { status: 404 }))
+  await assert.doesNotReject(fulfillCruiseControl(mockRoute('missing_endpoint'), 'Unrecognized endpoint.', { status: 404 }))
+})
 
 test('API URLs preserve the configured prefix with or without a trailing slash', () => {
   for (const base of ['https://example.test/kafkacruisecontrol', 'https://example.test/kafkacruisecontrol/']) {
