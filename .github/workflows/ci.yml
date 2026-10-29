@@ -17,7 +17,7 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      - run: npm install --global npm@12.2.1 --no-audit --no-fund
+      - run: npm install --global "npm@$(node -p 'require("./package.json").engines.npm')" --no-audit --no-fund
       - run: npm ci --no-audit --no-fund
       - run: npm test
       - run: npm run lint
