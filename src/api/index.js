@@ -1,6 +1,5 @@
 /* Copyright 2017-2019 LinkedIn Corp. Licensed under the BSD 2-Clause License (the "License"). See License in the project root for license information. */
 import store from '../store'
-import buildUrl from 'build-url'
 import parse from 'url-parse'
 
 function getURL (type, params) {
@@ -25,7 +24,10 @@ function getURL (type, params) {
     parsed.set('pathname', parsed.pathname + sep + type)
   }
   // set the query parameters
-  parsed.set('query', buildUrl(null, {queryParams: params}))
+  const query = Object.entries(params)
+    .filter(([, value]) => value !== undefined)
+    .map(([key, value]) => [key, value === null ? '' : String(value).trim()])
+  parsed.set('query', new URLSearchParams(query).toString())
   return parsed.toString()
 }
 

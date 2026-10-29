@@ -64,6 +64,32 @@ test('API query parameters preserve topic characters and explicit JSON selection
   assert.equal(url.searchParams.get('json'), 'false')
 })
 
+test('API query parameters retain optional values and comma-separated lists', () => {
+  store.commit('seturl', 'https://example.test/kafkacruisecontrol')
+  const url = new URL(api.getURL('rebalance', {
+    excluded_topics: undefined,
+    reason: null,
+    goals: ['RackAwareGoal', 'DiskCapacityGoal'],
+    brokerid: [],
+    dryrun: false,
+    review_id: 0
+  }))
+  assert.equal(url.searchParams.has('excluded_topics'), false)
+  assert.equal(url.searchParams.get('reason'), '')
+  assert.deepEqual(url.searchParams.getAll('goals'), ['RackAwareGoal,DiskCapacityGoal'])
+  assert.equal(url.searchParams.get('brokerid'), '')
+  assert.equal(url.searchParams.get('dryrun'), 'false')
+  assert.equal(url.searchParams.get('review_id'), '0')
+})
+
+test('API query parameters trim values without losing encoded characters', () => {
+  store.commit('seturl', 'https://example.test/kafkacruisecontrol')
+  const url = new URL(api.getURL('partitionload', { topic: '  orders + archive&region=eu/#%  ' }))
+  assert.equal(url.searchParams.get('topic'), 'orders + archive&region=eu/#%')
+  assert.equal(url.searchParams.has('region'), false)
+  assert.equal(url.hash, '')
+})
+
 test('async progress accepts the current nested operation response', () => {
   const wrapper = mount(AsyncTask, {
     global: { mocks: { $formatters: formatters } },
