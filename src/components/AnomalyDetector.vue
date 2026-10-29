@@ -5,7 +5,7 @@
       <b>URL ({{group}}, {{cluster}}):</b> <a target=_blank :href='url'>{{ url }}</a>
     </div>
     <div v-if='!loading'>
-      <div class="alert alert-primary text-right">
+      <div class="alert alert-primary text-end">
         <button class="btn btn-primary" @click='getState()'>Refresh Anomaly Detector State</button>
       </div>
     </div>
@@ -62,7 +62,7 @@
                 <ul class="list-group">
                   <li class="list-group-item d-flex justify-content-between align-items-center" v-for="(time, broker) in r.failedBrokersByTimeMs">
                     {{ broker }}
-                    <span class="badge badge-primary badge-pill">{{ $formatters.formatLocalTime(time) }} ago</span>
+                    <span class="badge text-bg-primary rounded-pill">{{ $formatters.formatLocalTime(time) }} ago</span>
                   </li>
                 </ul>
               </td>

@@ -5,7 +5,7 @@
       <b>URL ({{group}}, {{cluster}}):</b> <a target=_blank :href='url'>{{ url }}</a>
     </div>
     <div v-if='!loading'>
-      <div class="alert alert-primary text-right">
+      <div class="alert alert-primary text-end">
         <button class="btn btn-primary" @click='getKafkaState()'>Refresh Kafka Cluster State</button>
       </div>
     </div>

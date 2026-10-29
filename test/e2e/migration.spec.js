@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { readFileSync } from 'node:fs'
+import { readFileSync, readdirSync } from 'node:fs'
 import { load, mockCruiseControl, partitionLoad, progress, proposals } from '../fixtures/cruise-control'
 
 let errors
@@ -72,6 +72,100 @@ test('hash navigation, active tabs and cluster switches use the selected backend
   await page.goBack()
   await expect(page).toHaveURL(/#\/east\/alpha\/load$/)
   await expect(page.locator('#page')).toContainText('2.00 GB')
+})
+
+test('administration dropdown supports keyboard navigation and Escape', async ({ page }) => {
+  await page.goto('./#/')
+  const toggle = page.getByRole('button', { name: 'UI Administration', exact: true })
+  await toggle.focus()
+  await toggle.press('ArrowDown')
+  const preferences = page.getByRole('link', { name: /Preferences/ })
+  await expect(preferences).toBeFocused()
+  await expect(toggle).toHaveAttribute('aria-expanded', 'true')
+  await preferences.press('Escape')
+  await expect(preferences).toBeHidden()
+  await expect(toggle).toBeFocused()
+  await toggle.press('Enter')
+  await preferences.click()
+  await expect(page).toHaveURL(/#\/preferences$/)
+  await expect(page.locator('#page')).toContainText('Cruise Control UI - Preferences')
+})
+
+async function primaryColor (page) {
+  return page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--bs-primary').trim())
+}
+
+test('theme picker offers all installed themes, switches live, and remembers the selection', async ({ page }) => {
+  await page.goto('./#/preferences')
+  const picker = page.getByLabel('Theme', { exact: true })
+  await expect(picker).toHaveValue('sandstone')
+  await expect.poll(() => primaryColor(page)).toBe('#325d88')
+  const installed = readdirSync('node_modules/bootswatch/dist', { withFileTypes: true })
+    .filter(entry => entry.isDirectory()).map(entry => entry.name).sort()
+  expect(await picker.locator('option').evaluateAll(options => options.map(option => option.value).sort())).toEqual(installed)
+  for (const [theme, color] of [['cosmo', '#2780e3'], ['darkly', '#375a7f'], ['sandstone', '#325d88']]) {
+    await picker.selectOption(theme)
+    await expect.poll(() => primaryColor(page)).toBe(color)
+    await expect(page.locator('head link[data-bootswatch-theme]')).toHaveCount(1)
+  }
+  await picker.selectOption('cosmo')
+  await expect.poll(() => primaryColor(page)).toBe('#2780e3')
+  await page.reload()
+  await expect(picker).toHaveValue('cosmo')
+  await expect.poll(() => primaryColor(page)).toBe('#2780e3')
+  await page.getByRole('link', { name: 'Summary', exact: true }).click()
+  await expect.poll(() => primaryColor(page)).toBe('#2780e3')
+})
+
+test('an invalid saved theme falls back to Sandstone', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('cruise-control-ui.theme', 'https://example.test/untrusted.css'))
+  await page.goto('./#/preferences')
+  await expect(page.getByLabel('Theme', { exact: true })).toHaveValue('sandstone')
+  await expect.poll(() => primaryColor(page)).toBe('#325d88')
+})
+
+test('unavailable browser storage does not prevent theme switching', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(window, 'localStorage', {
+      get () { throw new DOMException('Storage is disabled', 'SecurityError') }
+    })
+  })
+  await page.goto('./#/preferences')
+  const picker = page.getByLabel('Theme', { exact: true })
+  await expect(picker).toHaveValue('sandstone')
+  await picker.selectOption('cosmo')
+  await expect.poll(() => primaryColor(page)).toBe('#2780e3')
+  await page.reload()
+  await expect(picker).toHaveValue('sandstone')
+  await expect.poll(() => primaryColor(page)).toBe('#325d88')
+})
+
+test('a storage write failure does not interrupt the selected theme', async ({ page }) => {
+  await page.addInitScript(() => {
+    Storage.prototype.setItem = () => {
+      throw new DOMException('Storage is full', 'QuotaExceededError')
+    }
+  })
+  await page.goto('./#/preferences')
+  await page.getByLabel('Theme', { exact: true }).selectOption('darkly')
+  await expect.poll(() => primaryColor(page)).toBe('#375a7f')
+})
+
+test('partition filters align on desktop and stack on narrow screens', async ({ page }) => {
+  await page.goto('./#/east/alpha/partitionload')
+  const resource = page.locator('#page select')
+  const entries = page.locator('#page input[type="number"]').first()
+  await expect(resource).toBeVisible()
+  await expect(entries).toBeVisible()
+  let resourceBox = await resource.boundingBox()
+  let entriesBox = await entries.boundingBox()
+  expect(Math.abs(resourceBox.y - entriesBox.y)).toBeLessThan(2)
+  expect(entriesBox.x).toBeGreaterThan(resourceBox.x + resourceBox.width)
+  await page.setViewportSize({ width: 600, height: 900 })
+  resourceBox = await resource.boundingBox()
+  entriesBox = await entries.boundingBox()
+  expect(entriesBox.y).toBeGreaterThan(resourceBox.y + resourceBox.height)
+  expect(Math.abs(resourceBox.x - entriesBox.x)).toBeLessThan(2)
 })
 
 test('broker actions keep dry-run defaults and advanced goal controls', async ({ page }) => {

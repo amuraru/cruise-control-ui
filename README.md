@@ -37,7 +37,7 @@ Application Screnshots & How-to Guides are available in the [wiki](https://githu
 Development
 ===========
 
-Use Node.js 24 LTS (see `.nvmrc`) and npm 11 or later. CI also checks Node.js 26.
+Use Node.js 26 (see `.nvmrc`) and npm 11 or later. CI uses the same Node.js version.
 
 ```bash
 npm ci --no-audit --no-fund
@@ -51,8 +51,8 @@ Configure that CSV with the existing Cruise Control API prefix (for example,
 `/kafkacruisecontrol`). The compatibility tests cover API URL construction and
 both nested and legacy asynchronous progress responses.
 
-The application uses Vue 3, Vue Router 4, Vuex 4, and Chart.js 4 with
-vue-chartjs 5. The Options API, Bootstrap 4 styling, hash-based routes, and
+The application uses Vue 3, Vue Router 5, Vuex 4, and Chart.js 4 with
+vue-chartjs 5. The Options API, Bootstrap 5 styling, hash-based routes, and
 Cruise Control API contracts are retained. Internet Explorer is not supported.
 
 Run `npm run dev` to start Vite on port 8090 (`PORT` overrides the port).

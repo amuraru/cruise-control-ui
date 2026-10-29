@@ -4,7 +4,7 @@
       <b>URL ({{group}}, {{cluster}}):</b> <a target=_blank :href='url'>{{ url }}</a>
     </div>
     <div v-if='!loading'>
-      <div class="alert alert-primary text-right">
+      <div class="alert alert-primary text-end">
         <button class="btn btn-primary" @click='getReviews()'>Refresh Reviews</button>
       </div>
     </div>
@@ -19,7 +19,7 @@
     </div>
     <div v-else>
       <table class="table table-sm table-bordered">
-        <thead class='thead-light'>
+        <thead class='table-light'>
           <tr>
             <th>Id</th>
             <th>Submitted From</th>
@@ -161,13 +161,13 @@ export default {
     },
     statusLabel (s) {
       if (s === 'DISCARDED') {
-        return 'badge badge-warning'
+        return 'badge text-bg-warning'
       } else if (s === 'APPROVED') {
-        return 'badge badge-success'
+        return 'badge text-bg-success'
       } else if (s === 'SUBMITTED') {
-        return 'badge badge-primary'
+        return 'badge text-bg-primary'
       } else {
-        return 'badge badge-secondary'
+        return 'badge text-bg-secondary'
       }
     },
     reconstructURL (u, id) {

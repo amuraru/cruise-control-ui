@@ -11,7 +11,7 @@
       <div class="alert alert-primary">
         <b>Flags: </b>
         <label>Allow Capacity Estimation:</label> <input type=checkbox v-model=allow_capacity_estimation>
-        <button class="btn btn-primary float-right" @click='getLoad()'>Refresh Kafka Cluster Load</button>
+        <button class="btn btn-primary float-end" @click='getLoad()'>Refresh Kafka Cluster Load</button>
       </div>
     </div>
     <div v-if='error'>

@@ -5,7 +5,7 @@
       <b>URL ({{group}}, {{cluster}}):</b> <a target=_blank :href='url'>{{ url }}</a>
     </div>
     <div v-if='!loading'>
-      <div class="alert alert-primary text-right">
+      <div class="alert alert-primary text-end">
         <button class="btn btn-primary" @click='getState()'>Refresh Analyzer State</button>
       </div>
     </div>
@@ -24,7 +24,7 @@
           <div class='card-header'>Analyzer</div>
           <div class='card-body'>
             <p class="card-text">
-              <span :class="['badge', AnalyzerState.isProposalReady ? 'badge-success' : 'badge-info']">{{ !AnalyzerState.isProposalReady ? 'PROPOSAL_NOT_READY' : 'PROPOSALS_READY' }}</span>
+              <span :class="['badge', AnalyzerState.isProposalReady ? 'text-bg-success' : 'text-bg-info']">{{ !AnalyzerState.isProposalReady ? 'PROPOSAL_NOT_READY' : 'PROPOSALS_READY' }}</span>
             </p>
           </div>
         </div>
@@ -32,7 +32,7 @@
       <div>
         <div v-if='AnalyzerState.goalReadiness.length > 0'>
           <table class="table table-sm table-bordered">
-            <thead class="thead-light">
+            <thead class="table-light">
               <tr>
                 <th>Goal</th>
                 <th>Status</th>

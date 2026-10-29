@@ -9,45 +9,45 @@
     </div>
     <div class="alert alert-primary">
       <form>
-        <div class="form-row">
-          <div class="form-group col-md-6">
-            <label>Resource:</label>
-            <select class="form-control" v-model='resource'>
+        <div class="row gx-2">
+          <div class="mb-3 col-md-6">
+            <label class="form-label" for="partition-resource">Resource:</label>
+            <select id="partition-resource" class="form-select" v-model='resource'>
               <option :key='r.key' :value='r.key' v-for='r in allResources'>{{ r.label }}</option>
             </select>
           </div>
-          <div class="form-group col-md-6">
-            <label for="inputPassword4"># Entries</label>
-            <input type="number" class="form-control" v-model='numRecords'>
+          <div class="mb-3 col-md-6">
+            <label class="form-label" for="partition-entries"># Entries</label>
+            <input id="partition-entries" type="number" class="form-control" v-model='numRecords'>
           </div>
         </div>
-        <div class="form-row">
-          <div class="form-group col-md-8">
-            <label for="inputAddress">Topic <b title="Topics takes  Regular Expression">❓</b></label>
-            <input type="text" class="form-control" v-model='topicName'>
+        <div class="row gx-2">
+          <div class="mb-3 col-md-8">
+            <label class="form-label" for="partition-topic">Topic <b title="Topics takes  Regular Expression">❓</b></label>
+            <input id="partition-topic" type="text" class="form-control" v-model='topicName'>
           </div>
-          <div class="form-group col-md-2">
-            <label for="inputAddress">Min Partition #</label>
-            <input type="number" min="0" class="form-control" v-model='partitionRangeMin'>
+          <div class="mb-3 col-md-2">
+            <label class="form-label" for="partition-min">Min Partition #</label>
+            <input id="partition-min" type="number" min="0" class="form-control" v-model='partitionRangeMin'>
           </div>
-          <div class="form-group col-md-2">
-            <label for="inputAddress">Max Partition #</label>
-            <input type="number" min="0" class="form-control" v-model='partitionRangeMax'>
+          <div class="mb-3 col-md-2">
+            <label class="form-label" for="partition-max">Max Partition #</label>
+            <input id="partition-max" type="number" min="0" class="form-control" v-model='partitionRangeMax'>
           </div>
         </div>
-        <!-- TODO: Use date/time picker which requies jquery
-        <div class="form-row">
-          <div class="form-group col-md-6">
+        <!-- TODO: Use date/time picker
+        <div class="row gx-2">
+          <div class="mb-3 col-md-6">
             <label for="inputAddress">Start Time</label>
             <input type="number" min=0 class="form-control" v-model='startTimestamp'>
           </div>
-          <div class="form-group col-md-6">
+          <div class="mb-3 col-md-6">
             <label for="inputAddress">End Time</label>
             <input type="number" min=0 class="form-control" v-model='endTimestamp'>
           </div>
         </div>
         -->
-        <div class="form-group">
+        <div class="mb-3">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" v-model='allowCapacityEstimation'>
             <label class="form-check-label">
@@ -55,7 +55,7 @@
             </label>
           </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" v-model='maxLoad'>
             <label class="form-check-label">
@@ -63,7 +63,7 @@
             </label>
           </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" v-model='showURL'>
             <label class="form-check-label">

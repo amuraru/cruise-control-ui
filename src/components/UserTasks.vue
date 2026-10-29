@@ -5,7 +5,7 @@
       <b>URL ({{group}}, {{cluster}}):</b> <a target=_blank :href='url'>{{ url }}</a>
     </div>
     <div v-if='!loading'>
-      <div class="alert alert-primary text-right">
+      <div class="alert alert-primary text-end">
         <button class="btn btn-primary" @click='getUserTasks()'>Refresh User Tasks</button>
       </div>
     </div>
@@ -20,7 +20,7 @@
     </div>
     <div v-else-if='sortedTasks.length > 0'>
       <table class="table table-sm table-bordered">
-        <thead class="thead-light">
+        <thead class="table-light">
           <tr>
             <th @click='sort("UserTaskId")'>Task Id</th>
             <th @click='sort("ClientIdentity")'>Client</th>
@@ -37,8 +37,8 @@
             <td>{{ (new Date(parseInt(t.StartMs, 10))).toString().substr(0, 34) }}</td>
             <td>{{ $formatters.formatLocalTime(t.StartMs) }}</td>
             <td>
-              <span v-if='t.Status === "Completed"' class="badge badge-success">{{ t.Status }}</span>
-              <span v-else class="badge badge-info">{{ t.Status }}</span>
+              <span v-if='t.Status === "Completed"' class="badge text-bg-success">{{ t.Status }}</span>
+              <span v-else class="badge text-bg-info">{{ t.Status }}</span>
             </td>
             <td>{{ t.RequestURL }}</td>
           </tr>

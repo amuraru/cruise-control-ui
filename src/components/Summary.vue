@@ -7,7 +7,7 @@
     <table class="table table-sm table-bordered">
       <thead>
         <tr>
-          <th colspan=7 class="text-right">
+          <th colspan=7 class="text-end">
             <span>Group Filter:</span>
             <select v-model='selectedGroup'>
               <option v-for='g in groups' :key='g'> {{ g }} </option>

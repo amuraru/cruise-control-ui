@@ -4,7 +4,7 @@
     <h4>{{ title }}</h4>
     <div class="alert alert-success" v-if='partitions.length <= 0'>{{ successTitle }}</div>
     <table class="table table-sm table-bordered" v-else>
-      <thead class="thead-light">
+      <thead class="table-light">
         <tr>
           <th>Kafka Topic</th>
           <th>Partition</th>
@@ -29,7 +29,7 @@
           <td colspan=3>
             Found {{ partitions.length }} Records
           </td>
-          <td colspan=3 class='text-right'>
+          <td colspan=3 class='text-end'>
             <label> #Records Per Page:</label>
             <input v-model='perpage' type='number'>
             <label> Page #</label>

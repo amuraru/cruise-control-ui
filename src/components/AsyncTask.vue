@@ -7,7 +7,7 @@
         <div class="alert alert-info"><b>INFO:</b> Cruise control requires more time to compute the response for this request. Progress of each step is shown below.</div>
         <pre v-if='!isParsed'>{{ asyncData }}</pre>
         <table v-else class="table table-sm table-bordered">
-          <thead class="thead-light">
+          <thead class="table-light">
             <tr>
               <th class="text-center">Name</th>
               <th class="text-center">Operation</th>
@@ -39,7 +39,7 @@
         </table>
         <!--
           TBD: For some reason, this event is captured only once by parent component
-          <div class="text-right">
+          <div class="text-end">
           <button @click="checkNow()" class="btn btn-primary">Check Status Now</button>
           </div>
         -->

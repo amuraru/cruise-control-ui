@@ -26,7 +26,7 @@
 
       <h4>Proposal Changes</h4>
       <table class="table table-sm table-bordered">
-        <thead class="thead-light">
+        <thead class="table-light">
           <tr>
             <th>Number of Replica Movements</th>
             <th>Number of Leader Movements</th>
@@ -48,7 +48,7 @@
 
       <h4>Optimized Load Difference - Per Broker</h4>
       <table class="table table-sm table-bordered">
-        <thead class="thead-light">
+        <thead class="table-light">
           <tr>
             <th>Broker ID</th>
             <th v-for="h in brokerLoad.heading">{{ h }}</th>
@@ -66,7 +66,7 @@
 
       <h4>Optimized Load Difference - Per Host</h4>
       <table class="table table-sm table-bordered">
-        <thead class="thead-light">
+        <thead class="table-light">
           <tr>
             <!-- <th>Host</th> -->
             <th v-for="h in hostLoad.heading">{{ h }}</th>
@@ -84,7 +84,7 @@
 
       <h4>Goals</h4>
       <table class="table table-sm table-bordered">
-        <thead class="thead-light">
+        <thead class="table-light">
           <tr>
             <th>Goal &amp; Goal Violation Details</th>
             <th>Metadata</th>

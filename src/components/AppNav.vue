@@ -7,16 +7,16 @@
     <router-link class="navbar-item" :to='{name: "summary"}'>Summary</router-link>
     <ul class="navbar-nav">
       <li class="nav-item dropdown" v-for="(groupm, forgroup) in groups" :key="forgroup">
-        <a class="nav-link dropdown-toggle" data-toggle='dropdown'>{{ forgroup }}</a>
+        <button type="button" class="nav-link dropdown-toggle" data-bs-toggle='dropdown' aria-expanded="false">{{ forgroup }}</button>
         <div class="dropdown-menu">
           <router-link class='dropdown-item' :key="c.label" v-for="c in groupm" :to='{"name": "page.kafkaclusterstate", "params": { "group": forgroup, "cluster": c.label } }'>{{ c.label }}</router-link>
         </div>
       </li>
     </ul>
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav ms-auto">
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" data-toggle='dropdown'>UI Administration</a>
-        <div class="dropdown-menu">
+        <button type="button" class="nav-link dropdown-toggle" data-bs-toggle='dropdown' aria-expanded="false">UI Administration</button>
+        <div class="dropdown-menu dropdown-menu-end">
           <router-link :to='{"name": "preferences"}' class="dropdown-item" target="_self">&#9881;  Preferences</router-link>
           <a class='dropdown-item' href='#' @click.prevent='refresh()'>⟳ Refresh Config</a>
           <router-link :to='{"name": "configInsights"}' class="dropdown-item" target="_self">config.csv Insights</router-link>
