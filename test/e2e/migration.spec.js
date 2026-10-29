@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { readFileSync, readdirSync } from 'node:fs'
-import { load, mockCruiseControl, partitionLoad, progress, proposals } from '../fixtures/cruise-control'
+import { fulfillCruiseControl, load, mockCruiseControl, partitionLoad, progress, proposals, taskId } from '../fixtures/cruise-control'
 
 let errors
 
@@ -37,7 +37,7 @@ for (const [path, content] of [
   ['/east/alpha/replicaload', 'Show Me Replica Load Anyway.'],
   ['/east/alpha/partitionload', 'Show Partition Load'],
   ['/east/alpha/proposals', 'Proposal Changes'],
-  ['/east/alpha/user_tasks', 'task-1'],
+  ['/east/alpha/user_tasks', taskId],
   ['/east/alpha/admin_state', 'Pause Sampling'],
   ['/east/alpha/admin_broker', 'Preferred Leader Election'],
   ['/east/alpha/review', 'Routine balance']
@@ -191,15 +191,15 @@ for (const [path, endpoint, data, content] of [
     await page.route(`**/kafkacruisecontrol/${endpoint}?*`, async route => {
       requests++
       if (requests === 1) {
-        return route.fulfill({ json: progress, headers: { 'User-Task-ID': 'async-task' } })
+        return fulfillCruiseControl(route, progress, { status: 202, taskId })
       }
-      expect(route.request().headers()['user-task-id']).toBe('async-task')
-      return route.fulfill({ json: data, headers: { 'User-Task-ID': 'async-task' } })
+      expect(route.request().headers()['user-task-id']).toBe(taskId)
+      return fulfillCruiseControl(route, data, { taskId })
     })
     await page.goto(`./#/east/alpha/${path}`)
     if (path === 'partitionload') await page.getByRole('button', { name: 'Show Partition Load' }).click()
     await expect(page.locator('#page')).toContainText('Collecting metrics')
-    await expect(page.locator('#page')).toContainText('async-task')
+    await expect(page.locator('#page')).toContainText(taskId)
     await page.getByRole('button', { name: /Refresh View Now/ }).click()
     await expect(page.locator('#page')).toContainText(content)
   })

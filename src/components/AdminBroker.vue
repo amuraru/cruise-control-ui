@@ -615,11 +615,6 @@ export default {
        * Use-Ready-Default-Goals        0       1                              1                      1                         0                     Analyzer
        * Kafka-Assigner-Mode            0       1                              0                      0                         1                     Analyzer
        */
-      // disable user flags
-      disable_goals1: false,
-      disable_skip_hard_goal_check: false,
-      disable_use_ready_default_goals: false,
-      disable_kafka_assigner: false,
       // user flags
       showAdvanced: false, // show all options on UI ?
       showURL: false, // show the URL on UI if true
@@ -633,8 +628,8 @@ export default {
       excluded_topics: '', // Check CC Documentation
       concurrent_partition_movements_per_broker: null, // Check CC Documentation
       concurrent_leader_movements: null, // Check CC Documentation
-      throttle_removed_broker: false, // Check CC Documentation
-      throttle_added_broker: false, // Check CC Documentation
+      throttle_removed_broker: true, // Match the server's throttled default.
+      throttle_added_broker: true, // Match the server's throttled default.
       // workflow
       actionName: 'ple', // radio to chose an action on ui
       dryrun: true, // part of URL
@@ -652,8 +647,17 @@ export default {
     taskId () {
       return this.$store.getters.getTaskId(this.url)
     },
-    disableGoals () {
+    disable_goals1 () {
       return this.kafka_assigner || this.use_ready_default_goals
+    },
+    disable_skip_hard_goal_check () {
+      return this.kafka_assigner
+    },
+    disable_use_ready_default_goals () {
+      return this.goals1.length > 0 || this.kafka_assigner
+    },
+    disable_kafka_assigner () {
+      return this.goals1.length > 0 || this.skip_hard_goal_check || this.use_ready_default_goals
     },
     brokerRowColor () {
       return null
@@ -709,13 +713,9 @@ export default {
       if (vm.actionName === 'remove_disks') {
         // POST /kafkacruisecontrol/remove_disks
         //  ?brokerid_and_logdirs=[id1-logdir1,id2-logdir2...]
-        //  &skip_hard_goal_check=[true/false]
         //  &dryrun=[true/false]
         if (vm.brokerid_and_logdirs) {
-          params.brokerid_and_logdirs = vm.brokerid_and_logdirs.replace(', ', '')
-        }
-        if (vm.skip_hard_goal_check) {
-          params.skip_hard_goal_check = vm.skip_hard_goal_check
+          params.brokerid_and_logdirs = vm.brokerid_and_logdirs.split(',').map(disk => disk.trim()).join(',')
         }
         return vm.$helpers.getURL('remove_disks', params)
       }
@@ -734,9 +734,7 @@ export default {
         //  &concurrent_leader_movements=[concurrency]
         //  &throttle_removed_broker=[true/false]
         //  &json=[true/false]
-        if (vm.throttle_removed_broker) {
-          params.throttle_removed_broker = params.throttle_removed_broker
-        }
+        params.throttle_removed_broker = vm.throttle_removed_broker
         return vm.$helpers.getURL('remove_broker', params)
       }
       if (vm.actionName === 'demote') {
@@ -746,6 +744,9 @@ export default {
         //  &json=[true/false]
         //  &allow_capacity_estimation=[true/false]
         //  &concurrent_leader_movements=[concurrency]
+        if (vm.concurrent_leader_movements > 0) {
+          params.concurrent_leader_movements = vm.concurrent_leader_movements
+        }
         return vm.$helpers.getURL('demote_broker', params)
       }
       if (vm.actionName === 'add') {
@@ -763,9 +764,7 @@ export default {
         //  &skip_hard_goal_check=[true/false]
         //  &excluded_topics=[TOPICS]
         //  &use_ready_default_goals=[true/false]
-        if (vm.throttle_added_broker) {
-          params.throttle_added_broker = vm.throttle_added_broker
-        }
+        params.throttle_added_broker = vm.throttle_added_broker
         return vm.$helpers.getURL('add_broker', params)
       }
       if (vm.actionName === 'ple') {
@@ -802,34 +801,14 @@ export default {
     }
   },
   watch: {
-    goals1: function (n, o) {
-      this.disable_use_ready_default_goals = n.length > 0
-      this.disable_kafka_assigner = n.length > 0
-    },
-    skip_hard_goal_check: function (n, o) {
-      // console.log(n, o)
-      if (n) {
-        this.disable_kafka_assigner = true
-      } else {
-        this.disable_kafka_assigner = false
-      }
-    },
     use_ready_default_goals: function (n, o) {
       if (n) {
         this.goals1 = []
       }
-      this.disable_goals1 = n
     },
     kafka_assigner: function (n, o) {
       if (n) {
         this.goals1 = []
-        this.disable_goals1 = true
-        this.disable_skip_hard_goal_check = true
-        this.disable_use_ready_default_goals = true
-      } else {
-        this.disable_goals1 = false
-        this.disable_skip_hard_goal_check = false
-        this.disable_use_ready_default_goals = false
       }
     },
     showAdvanced: function (n, o) {
@@ -843,6 +822,8 @@ export default {
         this.excluded_topics = null
         this.concurrent_partition_movements_per_broker = 0
         this.concurrent_leader_movements = 0
+        this.throttle_added_broker = true
+        this.throttle_removed_broker = true
       }
     },
     group: function (ogroup, ngroup) {
@@ -887,7 +868,7 @@ export default {
           'User-Task-ID': task
         }
       }
-      this.$http.post(vm.actionURL, params).then((r) => {
+      this.$http.post(vm.actionURL, null, params).then((r) => {
         // set this so that we know if the server sends user-task-id in the response
         vm.detectedUserTaskId = r.headers.hasOwnProperty('user-task-id')
         // store this task in local cache for future follow-up
