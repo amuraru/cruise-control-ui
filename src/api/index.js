@@ -24,10 +24,12 @@ function getURL (type, params) {
     parsed.set('pathname', parsed.pathname + sep + type)
   }
   // set the query parameters
-  const query = Object.entries(params)
-    .filter(([, value]) => value !== undefined)
-    .map(([key, value]) => [key, value === null ? '' : String(value).trim()])
-  parsed.set('query', new URLSearchParams(query).toString())
+  const query = Object.fromEntries(
+    Object.entries(params)
+      .filter(([, value]) => value !== undefined)
+      .map(([key, value]) => [key, value === null ? '' : String(value).trim()])
+  )
+  parsed.set('query', query)
   return parsed.toString()
 }
 
