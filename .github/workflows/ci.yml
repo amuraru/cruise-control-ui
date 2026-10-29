@@ -25,6 +25,4 @@ jobs:
       - run: npm run lint
       - run: npm run build
       - run: npx playwright install --with-deps chromium
-        if: matrix.node == 24
       - run: npm run test:e2e
-        if: matrix.node == 24
