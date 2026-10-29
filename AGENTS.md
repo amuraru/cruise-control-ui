@@ -47,6 +47,16 @@ Write PR descriptions clearly, with enough context for reviewers unfamiliar with
 the change. Reference related issues, discussions, and documentation. Put lengthy
 logs or code output in `<details>` blocks rather than pasting large blocks inline.
 
+## Dependency management
+
+All dependencies, including build tools, runtimes, Docker images, and GitHub
+Actions, are managed through Renovate. Declare versions in files and fields that
+Renovate tracks; do not hardcode versions in shell commands or duplicate version
+pins across configuration files. Read shared versions from their canonical
+declaration (for example, npm from `package.json`'s `engines.npm`). When adding a
+dependency that Renovate cannot detect automatically, configure its extraction
+in `renovate.json`.
+
 ## Cruise Control API mocks
 
 `test/fixtures/cruise-control.js` serves the browser tests. Its request parameters
