@@ -201,8 +201,7 @@ export async function mockCruiseControl (page) {
     const method = route.request().method()
     const params = url.searchParams
     const json = params.get('json')?.toLowerCase() === 'true'
-    const error = (status, errorMessage) => fulfillCruiseControl(route,
-      json ? { version: 1, errorMessage, stackTrace: '' } : errorMessage, { status })
+    const error = (status, errorMessage) => fulfillCruiseControl(route, json ? { version: 1, errorMessage, stackTrace: '' } : errorMessage, { status })
     const operation = openapi.paths[`/${endpoint}`]?.[method.toLowerCase()]
     if (!operation) return error(404, `Unrecognized endpoint ${method} ${endpoint}.`)
     const parameters = operation.parameters.filter(parameter => parameter.in === 'query')
@@ -263,10 +262,19 @@ export async function mockCruiseControl (page) {
     if (!json) {
       if (endpoint !== 'demote_broker') throw new Error(`No plaintext fixture for ${endpoint}`)
       const rows = brokerStats.brokers.map(broker => [
-        broker.Host, broker.Broker, broker.Rack, broker.DiskCapacityMB,
-        `${broker.DiskMB}/${broker.DiskPct}`, broker.NumCore, broker.CpuPct,
-        broker.NetworkInCapacity, broker.LeaderNwInRate, broker.FollowerNwInRate,
-        broker.NetworkOutCapacity, broker.NwOutRate, broker.PnwOutRate,
+        broker.Host,
+        broker.Broker,
+        broker.Rack,
+        broker.DiskCapacityMB,
+        `${broker.DiskMB}/${broker.DiskPct}`,
+        broker.NumCore,
+        broker.CpuPct,
+        broker.NetworkInCapacity,
+        broker.LeaderNwInRate,
+        broker.FollowerNwInRate,
+        broker.NetworkOutCapacity,
+        broker.NwOutRate,
+        broker.PnwOutRate,
         `${broker.Leaders}/${broker.Replicas}`
       ].join(','))
       const text = [

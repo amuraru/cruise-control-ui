@@ -153,10 +153,10 @@ export default {
       // Form Elements
       resource: 'DISK',
       allResources: [
-        {key: 'CPU', label: 'CPU'},
-        {key: 'NW_IN', label: 'Network In'},
-        {key: 'NW_OUT', label: 'Network Out'},
-        {key: 'DISK', label: 'Disk'}
+        { key: 'CPU', label: 'CPU' },
+        { key: 'NW_IN', label: 'Network In' },
+        { key: 'NW_OUT', label: 'Network Out' },
+        { key: 'DISK', label: 'Disk' }
       ],
       numRecords: 100,
       allowCapacityEstimation: true,
@@ -261,7 +261,7 @@ export default {
           vm.errorData = 'CruiseControl sent an empty response with 200-OK status code. Please file a bug here https://github.com/linkedin/cruise-control/issues'
         } else if (r.headers['content-type'].match(/text\/plain/) || r.data.progress) {
           let task = r.headers.hasOwnProperty('user-task-id') ? r.headers['user-task-id'] : null
-          vm.$store.commit('setTaskId', {url: vm.url, taskid: task}) // save this task for follow-up calls (null deletes in vuex)
+          vm.$store.commit('setTaskId', { url: vm.url, taskid: task }) // save this task for follow-up calls (null deletes in vuex)
           vm.async = true
           vm.asyncData = r.data
           vm.showAsyncRefreshButton = true

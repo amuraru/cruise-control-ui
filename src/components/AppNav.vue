@@ -54,7 +54,7 @@ export default {
       let notselected = true
       let url = vm.$store.state.configurl + '?_t=' + (new Date() / 1)
       // download the cluster information csv file
-      vm.$http.get(url, {withCredentials: true}).then((r) => {
+      vm.$http.get(url, { withCredentials: true }).then((r) => {
         let lines = r.data.split(/\n/)
         let groups = {}
         let config = {}
@@ -73,7 +73,7 @@ export default {
             if (!config[group][label]) {
               config[group][label] = csv[2]
             }
-            groups[group].push({label: label, url: url})
+            groups[group].push({ label: label, url: url })
             // set the initial selected things
             if (notselected) {
               vm.active.group = group

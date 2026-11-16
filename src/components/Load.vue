@@ -129,7 +129,7 @@ export default {
         } else if (r.headers['content-type'].match(/text\/plain/) || r.data.progress) {
           // capture the user-task-id only if the response is Async one
           let task = r.headers.hasOwnProperty('user-task-id') ? r.headers['user-task-id'] : null
-          vm.$store.commit('setTaskId', {url: vm.url, taskid: task}) // save this task for follow-up calls (null deletes in vuex)
+          vm.$store.commit('setTaskId', { url: vm.url, taskid: task }) // save this task for follow-up calls (null deletes in vuex)
           vm.async = true
           vm.asyncData = r.data
           vm.showAsyncRefreshButton = true

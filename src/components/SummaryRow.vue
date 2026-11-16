@@ -82,7 +82,7 @@ export default {
       const vm = this
       vm.loading = true
       let url = this.url + (this.url.endsWith('/') ? 'kafka_cluster_state' : '/kafka_cluster_state')
-      vm.req = vm.$http.get(url, {params: {json: true}, withCredentials: true}).then((r) => {
+      vm.req = vm.$http.get(url, { params: { json: true }, withCredentials: true }).then((r) => {
         if (r.data === null || r.data === undefined || r.data === '') {
           vm.error = true
           vm.errorData = 'CruiseControl sent an empty response with 200-OK status code. Please file a bug here https://github.com/linkedin/cruise-control/issues'
