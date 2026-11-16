@@ -353,10 +353,10 @@ export default {
       return this.$store.state.hideHelperURL
     },
     url () {
-      return this.$helpers.getURL('state', {substates: 'EXECUTOR', verbose: true})
+      return this.$helpers.getURL('state', { substates: 'EXECUTOR', verbose: true })
     },
     stopProposalExecutionURL () {
-      return this.$helpers.getURL('stop_proposal_execution', {force_stop: true})
+      return this.$helpers.getURL('stop_proposal_execution', { force_stop: true })
     },
     getPendingPartitionMovements () {
       if (typeof this.ExecutorState.pendingPartitionMovement === 'undefined') {
@@ -387,7 +387,7 @@ export default {
     getState () {
       const vm = this
       vm.loading = true
-      vm.$http.get(vm.url, {withCredentials: true, headers: {'Cache-Control': 'no-cache', 'Cache-buster': Date.now()}}).then((r) => {
+      vm.$http.get(vm.url, { withCredentials: true, headers: { 'Cache-Control': 'no-cache', 'Cache-buster': Date.now() } }).then((r) => {
         if (r.data === null || r.data === undefined || r.data === '') {
           vm.error = true
           vm.errorData = 'CruiseControl sent an empty response with 200-OK status code. Please file a bug here https://github.com/linkedin/cruise-control/issues'
@@ -412,7 +412,7 @@ export default {
     stopProposalExecution () {
       let vm = this
       // cancel the on-going proposal execution
-      vm.$http.post(this.stopProposalExecutionURL, {withCredentials: true}).then((r) => {
+      vm.$http.post(this.stopProposalExecutionURL, { withCredentials: true }).then((r) => {
         vm.errStopProsalExecution = false
         vm.okDataStopProposalExecution = r.data
       }, (e) => {

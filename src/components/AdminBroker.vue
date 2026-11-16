@@ -873,7 +873,7 @@ export default {
         vm.detectedUserTaskId = r.headers.hasOwnProperty('user-task-id')
         // store this task in local cache for future follow-up
         let task = r.headers.hasOwnProperty('user-task-id') ? r.headers['user-task-id'] : null
-        vm.$store.commit('setTaskId', {url: vm.actionURL, taskid: task}) // save this task for follow-up calls (null deletes in vuex)
+        vm.$store.commit('setTaskId', { url: vm.actionURL, taskid: task }) // save this task for follow-up calls (null deletes in vuex)
         vm.posted = true
         vm.postResponse = r.data
       }, (e) => {
@@ -888,7 +888,7 @@ export default {
       vm.loading = true
       let url = vm.$helpers.getURL('kafka_cluster_state')
       // console.log(url)
-      this.$http.get(url, {withCredentials: true}).then((r) => {
+      this.$http.get(url, { withCredentials: true }).then((r) => {
         // set this so that we know if the server sends user-task-id in the response
         vm.detectedUserTaskId = r.headers.hasOwnProperty('user-task-id')
         // do verify the state

@@ -120,10 +120,10 @@ export default {
       return this.$store.state.hideHelperURL
     },
     url () {
-      return this.$helpers.getURL('state', {substates: 'MONITOR', verbose: true})
+      return this.$helpers.getURL('state', { substates: 'MONITOR', verbose: true })
     },
     bootstrapUrl () {
-      return this.$helpers.getURL('bootstrap', {clearmetrics: true, start: 0})
+      return this.$helpers.getURL('bootstrap', { clearmetrics: true, start: 0 })
     },
     get_action_url () {
       if (this.MonitorState.state === 'PAUSED') {
@@ -161,7 +161,7 @@ export default {
     getState () {
       const vm = this
       vm.loading = true
-      vm.$http.get(vm.url, {withCredentials: true}).then((r) => {
+      vm.$http.get(vm.url, { withCredentials: true }).then((r) => {
         if (r.data === null || r.data === undefined || r.data === '') {
           vm.error = true
           vm.errorData = 'CruiseControl sent an empty response with 200-OK status code. Please file a bug here https://github.com/linkedin/cruise-control/issues'
@@ -185,7 +185,7 @@ export default {
     },
     bootstrapMetrics () {
       const vm = this
-      vm.$http.get(vm.bootstrapUrl, {withCredentials: true}).then((r) => {
+      vm.$http.get(vm.bootstrapUrl, { withCredentials: true }).then((r) => {
         alert('Bootstrap started, cruise control will now start to read historical metrics to get to ready state, please be patient')
       }, (e) => {
         alert(e.response.data.errorMessage)
@@ -194,7 +194,7 @@ export default {
     doAction () {
       let vm = this
       console.log(vm.get_action_url)
-      this.$http.post(vm.get_action_url, {withCredentials: true}).then((r) => {
+      this.$http.post(vm.get_action_url, { withCredentials: true }).then((r) => {
         this.getState()
       }, (e) => {
         this.getState()

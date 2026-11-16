@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     monitor_url () {
-      return this.$helpers.getURL('state', {substates: 'monitor'})
+      return this.$helpers.getURL('state', { substates: 'monitor' })
     },
     url () {
       if (this.state === 'PAUSED') {
@@ -68,7 +68,7 @@ export default {
     fetchMonitorState () {
       const vm = this
       vm.loading = true
-      this.$http.get(vm.monitor_url, {withCredentials: true}).then((r) => {
+      this.$http.get(vm.monitor_url, { withCredentials: true }).then((r) => {
         if (r.data === null || r.data === undefined || r.data === '') {
           vm.error = true
           vm.errorData = 'CruiseControl sent an empty response with 200-OK status code. Please file a bug here https://github.com/linkedin/cruise-control/issues'
@@ -92,7 +92,7 @@ export default {
     },
     changeState () {
       let vm = this
-      this.$http.post(vm.url, {withCredentials: true}).then((r) => {
+      this.$http.post(vm.url, { withCredentials: true }).then((r) => {
         vm.success = true
         window.setTimeout(function () {
           vm.success = null

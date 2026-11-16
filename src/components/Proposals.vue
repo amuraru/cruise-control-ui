@@ -189,7 +189,7 @@ export default {
     url () {
       // loadBeforeOptimization is removed and is available only when
       // we pass verbose=true flag
-      return this.$helpers.getURL('proposals', {verbose: true})
+      return this.$helpers.getURL('proposals', { verbose: true })
     },
     hostLoad () {
       let hostMap = [
@@ -197,7 +197,7 @@ export default {
         {} // after load
       ]
       let unified = {}
-      if (!this.loadBefore.brokers || !this.loadAfter.brokers) return {'heading': [], 'records': []}
+      if (!this.loadBefore.brokers || !this.loadAfter.brokers) return { 'heading': [], 'records': [] }
       // re-key them based on the broker-id
       let hostnames = []
       this.loadBefore.hosts.forEach((rec) => {
@@ -252,7 +252,7 @@ export default {
         {} // after load
       ]
       let unified = {}
-      if (!this.loadBefore.brokers || !this.loadAfter.brokers) return {'heading': [], 'records': []}
+      if (!this.loadBefore.brokers || !this.loadAfter.brokers) return { 'heading': [], 'records': [] }
       // re-key them based on the broker-id
       let brokerids = []
       this.loadBefore.brokers.forEach((rec) => {
@@ -342,14 +342,14 @@ export default {
         } else if (r.headers['content-type'].match(/text\/plain/) || r.data.progress) {
           // save the task-id if its present in the response header
           let task = r.headers.hasOwnProperty('user-task-id') ? r.headers['user-task-id'] : null
-          vm.$store.commit('setTaskId', {url, taskid: task}) // save this task for follow-up calls (null deletes in vuex)
+          vm.$store.commit('setTaskId', { url, taskid: task }) // save this task for follow-up calls (null deletes in vuex)
           // set the internal bits
           vm.async = true
           vm.asyncData = r.data
           vm.showAsyncRefreshButton = true
         } else {
           if (task && vm.$store.getters.getTaskId(url) === task) {
-            vm.$store.commit('setTaskId', {url, taskid: null})
+            vm.$store.commit('setTaskId', { url, taskid: null })
           }
           vm.async = false
           vm.loading = false
@@ -377,7 +377,7 @@ export default {
         if (task && e.response?.status === 400
           && typeof message === 'string' && message.startsWith('Unexpected header ')
           && message.includes('User-Task-ID') && vm.$store.getters.getTaskId(url) === task) {
-          vm.$store.commit('setTaskId', {url, taskid: null})
+          vm.$store.commit('setTaskId', { url, taskid: null })
           if (vm.url === url) {
             vm.getProposals()
             return

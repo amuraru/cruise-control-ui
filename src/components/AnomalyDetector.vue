@@ -212,7 +212,7 @@ export default {
       return this.$store.state.hideHelperURL
     },
     url () {
-      return this.$helpers.getURL('state', {substates: 'ANOMALY_DETECTOR', verbose: true})
+      return this.$helpers.getURL('state', { substates: 'ANOMALY_DETECTOR', verbose: true })
     }
   },
   methods: {
@@ -225,7 +225,7 @@ export default {
     getState () {
       const vm = this
       vm.loading = true
-      vm.$http.get(vm.url, {withCredentials: true}).then((r) => {
+      vm.$http.get(vm.url, { withCredentials: true }).then((r) => {
         if (r.data === null || r.data === undefined || r.data === '') {
           vm.error = true
           vm.errorData = 'CruiseControl sent an empty response with 200-OK status code. Please file a bug here https://github.com/linkedin/cruise-control/issues'
@@ -250,7 +250,7 @@ export default {
     stopProposalExecution () {
       let vm = this
       // cancel the on-going proposal execution
-      vm.$http.post(this.stopProposalExecutionURL, {withCredentials: true}).then((r) => {
+      vm.$http.post(this.stopProposalExecutionURL, { withCredentials: true }).then((r) => {
         vm.errStopProsalExecution = false
         vm.okDataStopProposalExecution = r.data
       }, (e) => {

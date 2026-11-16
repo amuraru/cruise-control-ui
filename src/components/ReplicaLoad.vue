@@ -107,7 +107,7 @@ export default {
       return this.$store.state.hideHelperURL
     },
     url: function () {
-      return this.$helpers.getURL('replicaload', {granularity: 'replica'})
+      return this.$helpers.getURL('replicaload', { granularity: 'replica' })
     }
   },
   methods: {
@@ -125,7 +125,7 @@ export default {
     getReplicaLoad () {
       let vm = this
       vm.loading = true
-      vm.$http.get(vm.url, {withCredentials: true}).then((r) => {
+      vm.$http.get(vm.url, { withCredentials: true }).then((r) => {
         if (r.data === null || r.data === undefined || r.data === '') {
           vm.error = true
           vm.errorData = 'CruiseControl sent an empty response with 200-OK status code. Please file a bug here https://github.com/linkedin/cruise-control/issues'
